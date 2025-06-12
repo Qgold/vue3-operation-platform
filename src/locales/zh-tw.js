@@ -1,0 +1,25 @@
+export default {
+  hello: '你好',
+  welcome: '管理平台',
+  juejin:'掘金',
+  screen:'大屏',
+  study:'学习',
+  introduction:'这是我的自我介绍',
+  userTitle:'个人信息',
+  userName:'姓名',
+  engName:'英文名字',
+  age:'年龄',
+  birthday:'出生日期',
+  school:'毕业院校',
+  address:'家庭住址',
+  logout:'退出登录',
+  theme:'主题',
+  welcomeU:'欢迎回来',
+  lanuage:'语言',
+  avator:'头像',
+  cancel:'取消',
+  confirm:'确定',
+  author:'张煜',
+  department:'研发数字化'
+  // 其他中文繁体翻译
+};

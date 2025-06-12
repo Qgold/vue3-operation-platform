@@ -1,0 +1,15 @@
+/* 自定义 CSS 变量 */
+:root {
+  --vp-c-brand: pink;
+  --vp-c-brand-light: pink;
+  --vp-home-hero-name-color: rgb(126, 126, 222);
+  --vp-c-text-1: white;
+
+}
+
+/* 自定义样式 */
+.custom-block {
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+} 
