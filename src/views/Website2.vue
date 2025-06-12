@@ -106,7 +106,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { CountUp } from 'countup.js'
+
 import { useTransition } from '@vueuse/core'
 // 统计数据
 const stats = ref([
@@ -219,20 +219,6 @@ const animate = () => {
   renderer.render(scene, camera)
 }
 
-// 初始化统计数字动画
-const initCountUp = () => {
-  stats.value.forEach((stat, index) => {
-    const countUp = new CountUp(`statValue${index}`, stat.targetValue, {
-      duration: 2500,
-      separator: ',',
-      decimal: '.'
-    })
-    countUp.start(() => {
-      alert('22')
-    })
-  })
-}
-
 // 访问数据滚动效果
 const startVisitScroll = () => {
   visitData.value = generateVisitData()
@@ -262,7 +248,7 @@ const handleResize = () => {
 
 onMounted(() => {
   initEarth()
-  initCountUp()
+
   startVisitScroll()
   window.addEventListener('resize', handleResize)
 })
