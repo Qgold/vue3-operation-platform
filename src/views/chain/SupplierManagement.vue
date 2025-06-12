@@ -170,18 +170,18 @@
           >
             <template #default="{ row }">
               <el-button
-                type="primary"
+                text
                 link
                 @click="handleViewContractDetail(row)"
               >查看</el-button>
               <el-button
-                type="primary"
+                text
                 link
                 @click="handleEditContract(row)"
                 class="ml-2"
               >编辑</el-button>
               <el-button
-                type="danger"
+                text
                 link
                 class="ml-2"
                 @click="handleDeleteContract(row)"
@@ -323,7 +323,7 @@
           >
             <template #default="{ row }">
               <el-button
-                type="primary"
+                text
                 link
                 @click="handleViewPerformanceDetail(row)"
               >

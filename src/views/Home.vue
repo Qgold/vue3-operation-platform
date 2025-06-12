@@ -5,15 +5,15 @@ import { ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const info = ref({
-  name: '张煜',
-  engName: 'coco',
+  name: 'xx',
+  engName: 'xx',
   age: 31,
   birthday: '1990-01-01',
   school: '南京邮电大学',
-  address: '江苏省徐州市云龙区佳泰雅园4单元1栋1103',
-  phone: '19025117623',
-  unit: '徐工集团',
-  email: 'zylovehcc1102@163.com'
+  address: 'xxxxxxxxx',
+  phone: 'xxxxxx',
+  unit: 'xxxxx',
+  email: 'xxxxxxxxxxx'
   // avator: '../assets/avator.jpg'
 })
 const dialogVisible = ref(false)
