@@ -1,4 +1,3 @@
-
 @import 'https://at.alicdn.com/t/c/font_2696678_2wngx1m3ux3.css';
 @import "tailwindcss";
 
@@ -81,6 +80,16 @@
   --highlight-disabled-color:#91baff;
 
 
+  --chart-color-1: #2f7afa;
+  --chart-color-2: #00c1cf;
+  --chart-color-3: #9f76f4;
+  --chart-color-4: #f5a258;
+  --chart-color-5: #54c274;
+  --chart-color-6: #e790e0;
+  --chart-color-7: #020202;
+  --chart-color-8: #96aed6;
+  --chart-color-9: #8fb3be;
+  
 
 
   --bg-color: #eff2f6;
