@@ -211,6 +211,10 @@ const initUserActivityChart = (el) => {
   const chart = echarts.init(el)
   charts.push(chart)
 
+  // 获取CSS变量
+  const style = getComputedStyle(document.documentElement)
+  const getThemeColor = (varName) => style.getPropertyValue(varName).trim()
+
   const option = {
     tooltip: {
       trigger: 'item'
@@ -226,6 +230,13 @@ const initUserActivityChart = (el) => {
         type: 'pie',
         radius: ['40%', '70%'],
         avoidLabelOverlap: false,
+        // 自定义每个部分的颜色
+        color: [
+          getThemeColor('--chart-color-1'), // 日活跃
+          getThemeColor('--chart-color-2'), // 周活跃
+          getThemeColor('--chart-color-3'), // 月活跃
+          getThemeColor('--chart-color-4') // 季活跃
+        ],
         itemStyle: {
           borderRadius: 10,
           borderColor: '#fff',
