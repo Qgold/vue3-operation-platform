@@ -7,13 +7,8 @@ import { ref, watchEffect } from 'vue'
 import TabBar from './TabBar.vue'
 import avator from '../assets/avator.jpg'
 import { Headset } from '@element-plus/icons-vue'
-
-import { useAppStore } from '../store/app.js'
-const app = useAppStore()
 const router = useRouter()
-const toggle = () => {
-  app.setIsCollapse(!app.isCollapse)
-}
+
 const goFeedback = () => {
   router.push('/system/detail')
 }
@@ -28,17 +23,6 @@ const goFeedback = () => {
       <!-- 左侧菜单 -->
       <aside class="sidebar">
         <Menu />
-        <div
-          class="footer-left"
-          :class="{ 'collapsed': app.isCollapse }"
-        >
-          <span
-            class="iconfont icon-zidingyizhibiao"
-            :class="{ 'rotate': app.isCollapse }"
-            @click="toggle"
-            title="折叠菜单"
-          />
-        </div>
       </aside>
 
       <!-- 主内容区域 -->
@@ -72,16 +56,15 @@ const goFeedback = () => {
             />
           </router-view>
         </div>
-        <!-- <div class="footer-right">
-        </div> -->
+
       </main>
 
     </div>
 
-    <!-- 页脚
+    <!-- 页脚 -->
     <footer class="footer">
       <Footer />
-    </footer> -->
+    </footer>
 
     <div
       class="fix-right"
@@ -132,7 +115,7 @@ const goFeedback = () => {
   </div>
 </template>
 
-<style scoped lang="less">
+<style scoped>
 .layout-container {
   display: flex;
   flex-direction: column;
@@ -156,20 +139,26 @@ const goFeedback = () => {
 .sidebar {
   background: var(--nav-bg);
   overflow-y: auto; /* 新增 */
-  height: calc(100vh - var(--header-height) - var(--collapse-height) - 4px);
+  height: calc(100vh - var(--header-height) - var(--footer-height) - 10px);
 }
 
 .content {
   flex: 1;
   overflow-y: auto; /* 新增 */
   background: var(--main-bg);
-  height: calc(100vh - var(--header-height) -68px- 10px); /* 新增 */
-  margin: 60px auto 10px 20px;
+  height: calc(
+    100vh - var(--header-height) - var(--footer-height) - 68px
+  ); /* 新增 */
+  margin: 60px auto 0px 20px;
   border-radius: 4px;
-  display: flex;
-  flex-direction: column;
 }
-
+.breadcrumb-container {
+  position: absolute;
+  top: 80px;
+  left: auto;
+  z-index: 10;
+  padding: 10px 0;
+}
 .tab-container {
   position: absolute;
   top: var(--header-height);
@@ -178,41 +167,17 @@ const goFeedback = () => {
   padding: 10px 0;
 }
 
-.footer-left {
+.footer {
   background: var(--nav-bg);
   border-top: 1px solid var(--line-color);
-  width: 214px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 20px;
-  height: var(--collapse-height);
-  transition: all 0.3s ease-in-out;
-  position: fixed;
+  width: 100vw;
+  position: absolute;
   left: 0;
+  right: 0;
   bottom: 0;
   z-index: 1000;
-
-  .iconfont {
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
-    color: var(--main-text-color);
-
-    &.rotate {
-      transform: rotate(180deg);
-    }
-
-    &:hover {
-      color: var(--primary-color);
-    }
-  }
-
-  &.collapsed {
-    width: 64px;
-  }
+  /* height: var(--footer-height); */
 }
-
 .fix-right {
   position: fixed;
   right: 20px;
