@@ -215,19 +215,16 @@
           <el-table-column
             label="操作"
             fixed="right"
-            width="150"
           >
             <template #default="{ row }">
               <el-button
                 text
                 link
-                style="width:46px;height:24px;"
                 @click="handleViewDetail(row)"
               >详情</el-button>
               <el-button
                 text
                 link
-                style="width:46px;height:24px;"
                 @click="handleAdjust(row)"
               >调整</el-button>
             </template>
@@ -292,16 +289,14 @@
           >
             <template #default="{ row }">
               <el-button
-                type="primary"
+                text
                 link
-                style="width:46px;height:24px;"
                 @click="handleViewTransfer(row)"
               >查看</el-button>
               <el-button
                 v-if="row.status === '待审核'"
-                type="success"
+                text
                 link
-                style="width:46px;height:24px;"
                 @click="handleApproveTransfer(row)"
               >审核</el-button>
             </template>
@@ -364,15 +359,13 @@
           >
             <template #default="{ row }">
               <el-button
-                type="primary"
+                text
                 link
                 @click="handleViewBatch(row)"
-                style="width:46px;height:24px;"
               >查看</el-button>
               <el-button
-                type="danger"
+                text
                 link
-                style="width:46px;height:24px;"
                 @click="handleLockBatch(row)"
               >锁定</el-button>
             </template>
