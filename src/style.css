@@ -15,6 +15,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  --collapse-height:40px;
   --header-height:56px; 
   --footer-height:56px; 
   --input-radius: 2px;
