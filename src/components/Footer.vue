@@ -1,24 +1,74 @@
 <template>
   <div class="footer-content">
-    <p class="warning">本网站由作者个人专属，不可商用，Copyright © 2025.4.25</p>
-
+    <div
+      class="footer-left"
+      :class="{ 'collapsed': app.isCollapse }"
+    >
+      <span
+        class="iconfont icon-zidingyizhibiao"
+        :class="{ 'rotate': app.isCollapse }"
+        @click="toggle"
+        title="折叠菜单"
+      />
+    </div>
+    <div class="line"></div>
+    <div class="footer-right">
+    </div>
   </div>
 </template>
+<script setup>
+import { useAppStore } from '../store/app.js'
+const app = useAppStore()
+const toggle = () => {
+  app.setIsCollapse(!app.isCollapse)
+}
+</script>
 
-<style scoped>
+<style scoped lang="less">
 .footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.warning {
-  color: var(--primary-color);
-  font-size: 14px;
-  margin-bottom: 8px;
+.footer-left {
+  width: 214px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 20px;
+  height: 40px;
+  transition: all 0.3s ease-in-out;
+
+  .iconfont {
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    color: var(--main-text-color);
+
+    &.rotate {
+      transform: rotate(180deg);
+    }
+
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
+
+  &.collapsed {
+    width: 64px;
+  }
 }
 
-.copyright {
-  color: #8c8c8c;
-  font-size: 12px;
+.line {
+  width: 20px;
+  height: var(--footer-height);
+  background: var(--line-color);
+  opacity: 0.6;
+}
+
+.footer-right {
+  flex: 1;
+  height: var(--footer-height);
 }
 </style>

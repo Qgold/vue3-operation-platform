@@ -169,16 +169,13 @@ const goFeedback = () => {
 .footer {
   background: var(--nav-bg);
   border-top: 1px solid var(--line-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100vw;
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 1000;
-  height: var(--footer-height);
+  /* height: var(--footer-height); */
 }
 .fix-right {
   position: fixed;

@@ -90,6 +90,17 @@ const historyChart = ref(null)
 const funnelChart = ref(null)
 const retentionChart = ref(null)
 const charts = []
+const style = getComputedStyle(document.documentElement)
+const getThemeColor = (varName) => style.getPropertyValue(varName).trim()
+
+// 漏斗图颜色配置
+const funnelColors = [
+  getThemeColor('--chart-color-1'),
+  getThemeColor('--chart-color-2'),
+  getThemeColor('--chart-color-3'),
+  getThemeColor('--chart-color-4'),
+  getThemeColor('--chart-color-5')
+]
 
 // 初始化历史数据对比图表
 const initHistoryChart = () => {
@@ -125,7 +136,7 @@ const initHistoryChart = () => {
         type: 'bar',
         data: [320, 332, 301, 334, 390, 330],
         itemStyle: {
-          color: '#91cc75'
+          color: getThemeColor('--chart-color-1')
         }
       },
       {
@@ -133,7 +144,7 @@ const initHistoryChart = () => {
         type: 'bar',
         data: [350, 382, 391, 434, 420, 380],
         itemStyle: {
-          color: '#5470c6'
+          color: getThemeColor('--chart-color-2')
         }
       }
     ]
@@ -197,7 +208,11 @@ const initFunnelChart = () => {
         },
         itemStyle: {
           borderColor: '#fff',
-          borderWidth: 1
+          borderWidth: 1,
+          // 使用自定义颜色
+          color: (params) => {
+            return funnelColors[params.dataIndex]
+          }
         },
         emphasis: {
           label: {
@@ -268,7 +283,7 @@ const initRetentionChart = () => {
           ])
         },
         itemStyle: {
-          color: '#3a4de9'
+          color: getThemeColor('--chart-color-1')
         }
       }
     ]

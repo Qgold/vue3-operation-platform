@@ -80,7 +80,7 @@
               :height="400"
               :smooth="true"
               :showArea="true"
-              :colors="['#F56C6C', '#E6A23C']"
+              :colors="[getThemeColor('--chart-color-1'), getThemeColor('--chart-color-2')]"
             />
           </div>
         </el-card>
@@ -305,6 +305,8 @@ import { ref, reactive, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import RectChart from '@/components/RectChart.vue'
 import MultiLine from '@/components/MultiLine.vue'
+const style = getComputedStyle(document.documentElement)
+const getThemeColor = (varName) => style.getPropertyValue(varName).trim()
 
 // 标签页激活状态
 const activeTab = ref('advertising')

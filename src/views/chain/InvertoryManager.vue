@@ -108,7 +108,7 @@
               :height="400"
               :smooth="true"
               :showArea="true"
-              :colors="['#F56C6C', '#E6A23C']"
+              :colors="[getThemeColor('--chart-color-1'), getThemeColor('--chart-color-2')]"
             />
 
           </el-card>
@@ -780,6 +780,8 @@ import { ref, computed } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import MultiLine from '@/components/MultiLine.vue'
+const style = getComputedStyle(document.documentElement)
+const getThemeColor = (varName) => style.getPropertyValue(varName).trim()
 
 // 标签页状态
 const activeTab = ref('warning')

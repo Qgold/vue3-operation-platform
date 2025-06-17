@@ -64,6 +64,7 @@
               :xAxisData="trendData.xAxisData"
               :series="trendData.series"
               height="300"
+              :colors="[getThemeColor('--chart-color-1'), getThemeColor('--chart-color-2'), getThemeColor('--chart-color-3')]"
             />
           </el-card>
         </div>
@@ -400,6 +401,8 @@
 <script setup>
 import { ref, computed, reactive } from 'vue'
 import MultiLine from '@/components/MultiLine.vue'
+const style = getComputedStyle(document.documentElement)
+const getThemeColor = (varName) => style.getPropertyValue(varName).trim()
 
 // 标签页激活状态
 const activeTab = ref('overview')

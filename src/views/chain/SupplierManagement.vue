@@ -244,6 +244,7 @@
                   :height="'300px'"
                   :smooth="true"
                   :showArea="true"
+                  :colors="[getThemeColor('--chart-color-1')]"
                 />
               </el-card>
             </el-col>
@@ -842,6 +843,8 @@ import { Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 import MultiLine from '@/components/MultiLine.vue'
+const style = getComputedStyle(document.documentElement)
+const getThemeColor = (varName) => style.getPropertyValue(varName).trim()
 
 // 页签激活状态
 const activeTab = ref('info')

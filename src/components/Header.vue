@@ -19,9 +19,6 @@ function logout() {
   app.removeUserInfo()
   router.push('/login')
 }
-const toggle = () => {
-  app.setIsCollapse(!app.isCollapse)
-}
 </script>
 <template>
   <div class="flex flex-row  bg-black fixed">
@@ -40,12 +37,7 @@ const toggle = () => {
         class="welcome-text"
         :class="{ 'text-collapsed': app.isCollapse }"
       >{{ $t('welcome') }}</span>
-      <span
-        class="iconfont icon-zidingyizhibiao text-3xl ml-10"
-        style="cursor: pointer;"
-        @click="toggle"
-        title="折叠菜单"
-      />
+
     </div>
     <div class="flex-grow flex justify-start items-center hover ml-20">
       <el-input

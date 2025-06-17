@@ -86,7 +86,7 @@
               <template #default="{ row }">
                 <el-button
                   link
-                  type="text"
+                  text
                   :disabled="row.status === '已处理'"
                   @click="handleWarning(row)"
                 >处理</el-button>
@@ -147,12 +147,12 @@
             >
               <template #default="{ row }">
                 <el-button
-                  type="primary"
+                  text
                   size="small"
                   @click="editRule(row)"
                 >编辑</el-button>
                 <el-button
-                  type="text"
+                  text
                   size="small"
                   class="delete-btn"
                   @click="deleteRule(row)"
@@ -255,6 +255,8 @@
 import { ref, onMounted, reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import * as echarts from 'echarts'
+const style = getComputedStyle(document.documentElement)
+const getThemeColor = (varName) => style.getPropertyValue(varName).trim()
 
 const activeTab = ref('records')
 const chartRef = ref(null)
@@ -431,22 +433,34 @@ const initChart = () => {
       {
         name: '库存告警',
         type: 'line',
-        data: [3, 5, 2, 7, 4, 6, 8]
+        data: [3, 5, 2, 7, 4, 6, 8],
+        itemStyle: {
+          color: getThemeColor('--chart-color-1')
+        }
       },
       {
         name: '流量告警',
         type: 'line',
-        data: [2, 3, 4, 2, 5, 3, 4]
+        data: [2, 3, 4, 2, 5, 3, 4],
+        itemStyle: {
+          color: getThemeColor('--chart-color-2')
+        }
       },
       {
         name: 'CPU告警',
         type: 'line',
-        data: [1, 2, 1, 3, 2, 4, 2]
+        data: [1, 2, 1, 3, 2, 4, 2],
+        itemStyle: {
+          color: getThemeColor('--chart-color-3')
+        }
       },
       {
         name: '内存告警',
         type: 'line',
-        data: [2, 1, 3, 2, 4, 1, 3]
+        data: [2, 1, 3, 2, 4, 1, 3],
+        itemStyle: {
+          color: getThemeColor('--chart-color-4')
+        }
       }
     ]
   }

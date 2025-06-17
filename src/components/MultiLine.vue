@@ -180,7 +180,6 @@ const handleResize = () => {
 }
 
 onMounted(() => {
-  console.log('kskdskjdjksdjksdjksjkdsjkd')
   initChart()
   window.addEventListener('resize', handleResize)
 })
