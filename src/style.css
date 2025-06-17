@@ -760,3 +760,16 @@ button:focus-visible {
 .el-table .el-table__cell {
  padding:3.5px 0 !important;
 }
+
+.el-dropdown {
+  --el-dropdown-menuItem-hover-color:var(--primary-color) !important;
+}
+
+.el-dropdown-menu ul {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+.el-dropdown-menu li:hover{
+  background-color: var(--active-item-color) !important;
+  color:var(--primary-color) !important;
+}
