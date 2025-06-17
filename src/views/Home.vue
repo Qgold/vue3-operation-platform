@@ -108,14 +108,10 @@ const handleClose = (done) => {
           disabled
         ></el-input>
       </el-form-item>
-      <el-row
-        :gutter="20"
-        justify="left"
-        align="middle"
-      >
-        <el-col :span="1"> <el-button @click="dialogVisible=true;">提交</el-button></el-col>
-        <el-col :span="1"> <el-button type="primary">取消</el-button></el-col>
-      </el-row>
+      <el-form-item class="ml-[140px]">
+        <el-button @click="dialogVisible=true;">提交</el-button>
+        <el-button type="primary">取消</el-button>
+      </el-form-item>
     </el-form>
     <el-dialog
       v-model="dialogVisible"
