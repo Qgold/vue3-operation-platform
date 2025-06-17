@@ -131,6 +131,7 @@ const goFeedback = () => {
   margin-top: var(--header-height);
   background: var(--bg-color);
   min-width: 1280px;
+  width: calc(100vw - 20px);
 }
 .main-content::-webkit-scrollbar {
   display: none;
