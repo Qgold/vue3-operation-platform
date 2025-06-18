@@ -8,7 +8,11 @@ import TabBar from './TabBar.vue'
 import avator from '../assets/avator.jpg'
 import { Headset } from '@element-plus/icons-vue'
 const router = useRouter()
-
+import { useAppStore } from '../store/app.js'
+const app = useAppStore()
+const toggle = () => {
+  app.setIsCollapse(!app.isCollapse)
+}
 const goFeedback = () => {
   router.push('/system/detail')
 }
@@ -22,53 +26,50 @@ const goFeedback = () => {
     <div class="main-content">
       <!-- 左侧菜单 -->
       <aside class="sidebar">
-        <Menu />
+        <div class="menu-container">
+          <Menu />
+        </div>
+        <div class="sidebar-bottom">
+          <span
+            class="iconfont icon-zidingyizhibiao"
+            :class="{ 'rotate': app.isCollapse }"
+            @click="toggle"
+            title="折叠菜单"
+          />
+        </div>
       </aside>
 
       <!-- 主内容区域 -->
       <main class="content">
-        <!-- <div class="breadcrumb-container">
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="/">promotion management</a></el-breadcrumb-item>
-            <el-breadcrumb-item>promotion list</el-breadcrumb-item>
-            <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
-          </el-breadcrumb>
-        </div> -->
         <div class="tab-container">
           <TabBar />
         </div>
+        <div class="content-container">
+          <div class="page-container">
+            <router-view v-slot="{ Component }">
+              <keep-alive>
+                <component
+                  :is="Component"
+                  v-if="$route.meta.keepAlive"
+                  :key="$route.fullPath"
+                />
+              </keep-alive>
 
-        <div class="p-6">
-          <router-view v-slot="{ Component }">
-            <keep-alive>
               <component
                 :is="Component"
-                v-if="$route.meta.keepAlive"
+                v-if="!$route.meta.keepAlive"
                 :key="$route.fullPath"
               />
-            </keep-alive>
-
-            <component
-              :is="Component"
-              v-if="!$route.meta.keepAlive"
-              :key="$route.fullPath"
-            />
-          </router-view>
+            </router-view>
+          </div>
         </div>
-
+        <div class="content-bottom"></div>
       </main>
-
     </div>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-      <Footer />
-    </footer>
 
     <div
       class="fix-right"
-      v-if="$route.path != '/login'"
+      v-if="!['register','login'].includes($route.path)"
     >
       <el-popover
         placement="left-start"
@@ -115,73 +116,125 @@ const goFeedback = () => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .layout-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  overflow: hidden; /* 新增 */
   width: 100vw;
   position: relative;
 }
 
 .main-content {
   display: flex;
-  flex: 1;
   margin-top: var(--header-height);
   background: var(--bg-color);
   min-width: 1280px;
-  width: calc(100vw - 20px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .main-content::-webkit-scrollbar {
   display: none;
 }
 .sidebar {
+  position: relative;
   background: var(--nav-bg);
-  overflow-y: auto; /* 新增 */
-  height: calc(100vh - var(--header-height) - var(--footer-height) - 10px);
+
+  transition: width 0.3s;
+
+  .menu-container {
+    height: calc(100vh - var(--header-height) - var(--collapse-height));
+    overflow-y: auto;
+  }
+
+  .sidebar-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--collapse-height);
+    border-top: 1px solid var(--line-color);
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+    align-items: center;
+  }
+  .iconfont {
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    color: var(--main-text-color);
+
+    &.rotate {
+      transform: rotate(180deg);
+    }
+
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
+
+  &.collapsed {
+    width: 64px;
+  }
 }
 
-.content {
+.right-content {
   flex: 1;
-  overflow-y: auto; /* 新增 */
-  background: var(--main-bg);
-  height: calc(
-    100vh - var(--header-height) - var(--footer-height) - 68px
-  ); /* 新增 */
-  margin: 60px auto 0px 20px;
-  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
-.breadcrumb-container {
-  position: absolute;
-  top: 80px;
-  left: auto;
-  z-index: 10;
-  padding: 10px 0;
-}
+
 .tab-container {
-  position: absolute;
+  position: fixed;
   top: var(--header-height);
   left: auto;
   z-index: 10;
   padding: 10px 0;
 }
 
-.footer {
-  background: var(--nav-bg);
-  border-top: 1px solid var(--line-color);
-  width: 100vw;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-  /* height: var(--footer-height); */
+.content {
+  flex: 1;
+  position: relative;
+  margin: 56px 20px 0;
+  background: var(--main-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+
+  .content-container {
+    height: calc(100vh - var(--header-height) - 60px);
+    overflow-y: auto;
+    padding-bottom: calc(var(--footer-height) + 20px);
+    &::-webkit-scrollbar {
+      width: 8px;
+      background: var(--default-color);
+    }
+  }
+
+  .content-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--footer-height);
+    border-top: 10px solid var(--line-color);
+    background: white;
+  }
+
+  .page-container {
+    padding: 20px;
+  }
 }
+
 .fix-right {
   position: fixed;
   right: 20px;
-  bottom: calc(var(--footer-height) + 20px);
+  bottom: 60px;
   width: 48px;
   display: flex;
   justify-content: center;
