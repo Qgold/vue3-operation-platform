@@ -203,13 +203,10 @@ const goFeedback = () => {
   margin: 56px 20px 0;
   background: var(--main-bg);
   border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-
   .content-container {
-    height: calc(100vh - var(--header-height) - 60px);
+    height: calc(100vh - var(--header-height) - var(--footer-height) - 60px);
     overflow-y: auto;
-    padding-bottom: calc(var(--footer-height) + 20px);
+
     &::-webkit-scrollbar {
       width: 8px;
       background: var(--default-color);
@@ -224,17 +221,18 @@ const goFeedback = () => {
     height: var(--footer-height);
     border-top: 10px solid var(--line-color);
     background: white;
+    box-sizing: content-box;
   }
 
   .page-container {
-    padding: 20px;
+    padding: 24px;
   }
 }
 
 .fix-right {
   position: fixed;
   right: 20px;
-  bottom: 60px;
+  bottom: var(--footer-height);
   width: 48px;
   display: flex;
   justify-content: center;

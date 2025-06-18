@@ -234,7 +234,7 @@ onMounted(() => {
 }
 
 .value {
-  color: #303133;
+  color: var(--main-text-color);
   font-weight: 500;
 }
 
@@ -266,7 +266,7 @@ onMounted(() => {
 .locations {
   display: flex;
   justify-content: space-between;
-  color: #606266;
+  color: var(--assistant-text-color);
   font-size: 14px;
 }
 
@@ -283,7 +283,7 @@ onMounted(() => {
 
   p {
     margin: 5px 0 0;
-    color: #606266;
+    color: var(--assistant-text-color);
     font-size: 14px;
   }
 }
