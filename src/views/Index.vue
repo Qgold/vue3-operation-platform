@@ -1,120 +1,468 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useAppStore } from '../store/app.js'
-import LineChart from '../components/LineChart.vue'
-import RectChart from '../components/RectChart.vue'
-import TreeChart from '../components/TreeChart.vue'
-import Calendar from '../components/Calendar.vue'
-import { useTransition } from '@vueuse/core'
+import * as echarts from 'echarts'
+import { Money, User, Document, PieChart } from '@element-plus/icons-vue'
 
-const loading = ref(true)
-const origin = ref(0)
-const treeData = {
-  name: '总公司',
-  children: [
-    {
-      name: '技术部',
-      children: [{ name: '开发组' }, { name: '测试组' }, { name: '运维组' }]
-    },
-    {
-      name: '销售部',
-      children: [{ name: '国内销售' }, { name: '海外销售' }]
-    }
-  ]
-}
-const outputValue = useTransition(origin, {
-  duration: 1500,
-  onFinished: () => {
-    // origin.value = 100000
+const timeRange = ref('month')
+const lineChartRef = ref(null)
+const pieChartRef = ref(null)
+
+// 待办事项数据
+const todoList = ref([
+  {
+    content: '新客户询价单待处理',
+    time: '2025-06-18 09:00',
+    type: 'warning',
+    color: '#E6A23C'
+  },
+  {
+    content: '供应商资质审核',
+    time: '2025-06-18 10:30',
+    type: 'success',
+    color: '#67C23A'
+  },
+  {
+    content: '项目进度评审会议',
+    time: '2025-06-18 14:00',
+    type: 'primary',
+    color: '#409EFF'
+  },
+  {
+    content: '合同文件待签署',
+    time: '2025-06-18 16:30',
+    type: 'danger',
+    color: '#F56C6C'
   }
-})
-origin.value = 1999999
+])
 
+// 询价结果数据
+const priceList = ref([
+  {
+    date: '2025-06-18',
+    name: '办公设备采购项目',
+    supplier: '科技有限公司',
+    price: '￥128,000',
+    status: '已成交'
+  },
+  {
+    date: '2025-06-17',
+    name: '软件开发服务',
+    supplier: '信息技术有限公司',
+    price: '￥256,000',
+    status: '已成交'
+  },
+  {
+    date: '2025-06-16',
+    name: '数据中心建设项目',
+    supplier: '网络科技有限公司',
+    price: '￥980,000',
+    status: '进行中'
+  },
+  {
+    date: '2025-06-15',
+    name: '安防系统升级',
+    supplier: '安防科技有限公司',
+    price: '￥158,000',
+    status: '已成交'
+  }
+])
+
+// 初始化图表
 onMounted(() => {
-  setTimeout(() => {
-    loading.value = false
-  }, 1000)
+  initLineChart()
+  initPieChart()
 })
+
+// 销售趋势图表
+const initLineChart = () => {
+  const chart = echarts.init(lineChartRef.value)
+  chart.setOption({
+    tooltip: {
+      trigger: 'axis'
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line',
+        smooth: true,
+        areaStyle: {
+          opacity: 0.3
+        }
+      }
+    ]
+  })
+}
+
+// 商品分析饼图
+const initPieChart = () => {
+  const chart = echarts.init(pieChartRef.value)
+  chart.setOption({
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      orient: 'vertical',
+      right: 10,
+      top: 'center'
+    },
+    series: [
+      {
+        name: '商品分类',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 10,
+          borderColor: '#fff',
+          borderWidth: 2
+        },
+        label: {
+          show: false,
+          position: 'center'
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: '16',
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: [
+          { value: 1048, name: '电子产品' },
+          { value: 735, name: '办公用品' },
+          { value: 580, name: '家具用品' },
+          { value: 484, name: '日常用品' }
+        ]
+      }
+    ]
+  })
+}
 </script>
 
 <template>
-  <div
-    class="card-container"
-    v-loading="loading"
-    element-loading-text="加载中..."
-  >
-    <div class="log-item">
-      <div class="list">
-        <el-statistic
-          title="总阅读量"
-          :value="outputValue"
-        />
-      </div>
-      <div class="list">
-        <el-statistic
-          title="总下载量"
-          :value="outputValue"
-        />
-      </div>
-      <div class="list">
-        <el-statistic
-          title="总访问量"
-          :value="outputValue"
-        />
-      </div>
-    </div>
+  <div class="index-container">
+    <!-- 顶部四个卡片 -->
+    <el-row
+      :gutter="20"
+      class="mb-4"
+    >
+      <el-col :span="6">
+        <el-card
+          shadow="hover"
+          class="overview-card"
+        >
+          <div class="data-overview">
+            <div class="overview-icon">
+              <el-icon
+                color="#409EFF"
+                :size="40"
+              >
+                <Money />
+              </el-icon>
+            </div>
+            <div class="overview-content">
+              <div class="overview-title">总交易额</div>
+              <div class="overview-number">¥ 234,567</div>
+              <div class="overview-desc">
+                <span class="percentage increase">+12.5%</span>
+                <span>较上月</span>
+              </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card
+          shadow="hover"
+          class="overview-card"
+        >
+          <div class="data-overview">
+            <div class="overview-icon">
+              <el-icon
+                color="#67C23A"
+                :size="40"
+              >
+                <User />
+              </el-icon>
+            </div>
+            <div class="overview-content">
+              <div class="overview-title">活跃用户</div>
+              <div class="overview-number">1,234</div>
+              <div class="overview-desc">
+                <span class="percentage increase">+8.2%</span>
+                <span>较上周</span>
+              </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card
+          shadow="hover"
+          class="overview-card"
+        >
+          <div class="data-overview">
+            <div class="overview-icon">
+              <el-icon
+                color="#E6A23C"
+                :size="40"
+              >
+                <Document />
+              </el-icon>
+            </div>
+            <div class="overview-content">
+              <div class="overview-title">订单总量</div>
+              <div class="overview-number">892</div>
+              <div class="overview-desc">
+                <span class="percentage decrease">-2.5%</span>
+                <span>较昨日</span>
+              </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card
+          shadow="hover"
+          class="overview-card"
+        >
+          <div class="data-overview">
+            <div class="overview-icon">
+              <el-icon
+                color="#F56C6C"
+                :size="40"
+              >
+                <PieChart />
+              </el-icon>
+            </div>
+            <div class="overview-content">
+              <div class="overview-title">转化率</div>
+              <div class="overview-number">15.8%</div>
+              <div class="overview-desc">
+                <span class="percentage increase">+5.2%</span>
+                <span>较上周</span>
+              </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
-    <RectChart />
+    <!-- 待办事项卡片 -->
+    <el-card class="mb-4">
+      <template #header>
+        <div class="card-header">
+          <span>待办事项</span>
+          <el-button
+            type="primary"
+            link
+          >查看全部</el-button>
+        </div>
+      </template>
+      <div
+        class="todo-list"
+        style="height: 300px;"
+      >
+        <el-timeline>
+          <el-timeline-item
+            v-for="(todo, index) in todoList"
+            :key="index"
+            :type="todo.type"
+            :color="todo.color"
+            :timestamp="todo.time"
+            size="large"
+          >
+            {{ todo.content }}
+          </el-timeline-item>
+        </el-timeline>
+      </div>
+    </el-card>
+
+    <!-- 询价结果公示 -->
+    <el-card class="mb-4">
+      <template #header>
+        <div class="card-header">
+          <span>询价结果公示</span>
+          <el-button
+            type="primary"
+            link
+          >更多</el-button>
+        </div>
+      </template>
+      <el-table
+        :data="priceList"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="date"
+          label="日期"
+          width="180"
+        />
+        <el-table-column
+          prop="name"
+          label="项目名称"
+        />
+        <el-table-column
+          prop="supplier"
+          label="供应商"
+          width="180"
+        />
+        <el-table-column
+          prop="price"
+          label="成交价格"
+          width="180"
+        />
+        <el-table-column
+          prop="status"
+          label="状态"
+          width="100"
+        >
+          <template #default="scope">
+            <el-tag :type="scope.row.status === '已成交' ? 'success' : 'warning'">
+              {{ scope.row.status }}
+            </el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+
+    <!-- 底部两个卡片 -->
+    <el-row :gutter="20">
+      <el-col :span="10">
+        <el-card>
+          <template #header>
+            <div class="card-header">
+              <span>热门商品分析</span>
+            </div>
+          </template>
+          <div
+            ref="pieChartRef"
+            style="height: 300px"
+          ></div>
+        </el-card>
+      </el-col>
+      <el-col :span="14">
+        <el-card>
+          <template #header>
+            <div class="card-header">
+              <span>销售趋势分析</span>
+              <div class="chart-actions">
+                <el-radio-group
+                  v-model="timeRange"
+                  size="small"
+                >
+                  <el-radio-button label="week">周</el-radio-button>
+                  <el-radio-button label="month">月</el-radio-button>
+                  <el-radio-button label="year">年</el-radio-button>
+                </el-radio-group>
+              </div>
+            </div>
+          </template>
+          <div
+            ref="lineChartRef"
+            style="height: 300px"
+          ></div>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
-<style scoped lang="less">
-:deep(.el-statistic__number) {
-  color: #ff6900 !important;
-}
-.card-container {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto; /* 添加滚动功能 */
-  padding: 10px; /* 使用 padding 控制间距 */
-}
-.card-container::-webkit-scrollbar {
-  display: none;
-  width: 0;
-}
-.log-item {
-  background-color: var(-card-bg);
-  border: 2px solid #f5f5f5;
-  border-radius: 4px;
-  margin: 0; /* 移除原有的 margin */
-  min-height: 100px;
-  display: flex;
-  flex: 1;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  &.direction-column {
-    flex-direction: column;
-  }
-  .list {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-.log-item:not(:first-child) {
-  margin-top: 10px;
+<style scoped>
+.index-container {
+  padding: 20px;
 }
 
-img,
-.girl {
-  height: 200px;
-  width: 140px;
-  margin: 10px;
-  object-fit: cover;
+.mb-4 {
+  margin-bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.overview-card {
   cursor: pointer;
-  &.lorge {
-    width: 280px;
-    height: 400px;
-  }
+  transition: all 0.3s;
+}
+
+.overview-card:hover {
+  transform: translateY(-5px);
+}
+
+.data-overview {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.overview-icon {
+  padding: 15px;
+  border-radius: 8px;
+  background: var(--el-fill-color-light);
+}
+
+.overview-content {
+  flex: 1;
+}
+
+.overview-title {
+  font-size: 14px;
+  color: var(--el-text-color-secondary);
+  margin-bottom: 8px;
+}
+
+.overview-number {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.overview-desc {
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+}
+
+.percentage {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.increase {
+  color: #67c23a;
+}
+
+.decrease {
+  color: #f56c6c;
+}
+
+.chart-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.todo-list {
+  height: 300px;
+  overflow-y: auto;
 }
 </style>

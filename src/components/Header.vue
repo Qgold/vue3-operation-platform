@@ -111,11 +111,10 @@ function logout() {
         title="退出登录"
         @click="dialogVisible=true;"
       >
-        <span>{{ $t('welcomeU') }}，{{ app.userName }}</span>
+        <!-- <span>{{ $t('welcomeU') }}，{{ app.userName }}</span> -->
         <el-avatar
           :size="32"
           :src="avator"
-          class="ml-10"
         />
       </div>
     </div>
@@ -155,7 +154,7 @@ function logout() {
   right: 0;
   bottom: 0;
   height: var(--header-height);
-  color: var(--primary-color);
+
   background: var(--nav-bg);
   border-bottom: solid 1px var(--line-color);
   min-width: 1280px;
@@ -186,7 +185,9 @@ function logout() {
     align-items: center;
     position: relative;
     padding: 0 12px;
-
+    &:hover {
+      color: var(--primary-color);
+    }
     &::after {
       content: '';
       position: absolute;
