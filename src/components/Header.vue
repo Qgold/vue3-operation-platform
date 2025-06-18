@@ -32,7 +32,7 @@ function logout() {
 }
 </script>
 <template>
-  <div class="flex flex-row bg-black fixed">
+  <div class="flex flex-row bg-black fixed border-[1px] border-[var(--line-color)] border-solid">
     <div
       class="font-bold text-2xl pl-5 leading-20"
       style="margin-right:auto;cursor:pointer; display: flex; align-items: center;"
@@ -154,7 +154,7 @@ function logout() {
   right: 0;
   bottom: 0;
   height: var(--header-height);
-
+  color: var(--main-text-color);
   background: var(--nav-bg);
   border-bottom: solid 1px var(--line-color);
   min-width: 1280px;

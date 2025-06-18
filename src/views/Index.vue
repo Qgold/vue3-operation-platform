@@ -166,7 +166,7 @@ const initPieChart = () => {
       <el-col :span="6">
         <el-card
           shadow="hover"
-          class="overview-card"
+          class="overview-card blue"
         >
           <div class="data-overview">
             <div class="overview-icon">
@@ -191,7 +191,7 @@ const initPieChart = () => {
       <el-col :span="6">
         <el-card
           shadow="hover"
-          class="overview-card"
+          class="overview-card green"
         >
           <div class="data-overview">
             <div class="overview-icon">
@@ -216,7 +216,7 @@ const initPieChart = () => {
       <el-col :span="6">
         <el-card
           shadow="hover"
-          class="overview-card"
+          class="overview-card blue"
         >
           <div class="data-overview">
             <div class="overview-icon">
@@ -241,7 +241,7 @@ const initPieChart = () => {
       <el-col :span="6">
         <el-card
           shadow="hover"
-          class="overview-card"
+          class="overview-card pink"
         >
           <div class="data-overview">
             <div class="overview-icon">
@@ -385,13 +385,8 @@ const initPieChart = () => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .index-container {
-  padding: 20px;
-}
-
-.mb-4 {
-  margin-bottom: 20px;
 }
 
 .card-header {
@@ -403,6 +398,16 @@ const initPieChart = () => {
 .overview-card {
   cursor: pointer;
   transition: all 0.3s;
+  &.blue {
+    background: linear-gradient(to right, #f2f9fe, #e6f4fe);
+  }
+  &.green {
+    background: linear-gradient(to right, #f5fef2, #e6feee);
+  }
+  &.pink {
+    background: linear-gradient(to right, #f6f7ff, #ececff);
+  }
+  border: none;
 }
 
 .overview-card:hover {
@@ -448,11 +453,11 @@ const initPieChart = () => {
 }
 
 .increase {
-  color: #67c23a;
+  color: var(--success);
 }
 
 .decrease {
-  color: #f56c6c;
+  color: var(--danger);
 }
 
 .chart-actions {

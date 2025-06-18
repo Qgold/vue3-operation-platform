@@ -200,7 +200,7 @@ const goFeedback = () => {
 .content {
   flex: 1;
   position: relative;
-  margin: 56px 20px 0;
+  margin: 56px 16px 0;
   background: var(--main-bg);
   border-radius: 4px;
   .content-container {
@@ -232,7 +232,7 @@ const goFeedback = () => {
 .fix-right {
   position: fixed;
   right: 20px;
-  bottom: var(--footer-height);
+  bottom: calc(var(--footer-height) + 20px);
   width: 48px;
   display: flex;
   justify-content: center;
