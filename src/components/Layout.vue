@@ -163,7 +163,7 @@ const goFeedback = () => {
     align-items: center;
   }
   .iconfont {
-    font-size: 20px;
+    font-size: 14px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
     color: var(--main-text-color);
