@@ -173,20 +173,17 @@
               {{ row.successRate }}%
             </template>
           </el-table-column>
-          <el-table-column
-            label="操作"
-            width="150"
-          >
+          <el-table-column label="操作">
             <template #default="{ row }">
               <el-button
-                type="primary"
+                text
                 link
                 @click="viewMessageDetail(row)"
               >
                 查看详情
               </el-button>
               <el-button
-                type="primary"
+                text
                 link
                 v-if="row.status === '待发送'"
                 @click="editMessage(row)"

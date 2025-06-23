@@ -17,7 +17,7 @@
 
   --collapse-height:32px;
   --header-height:56px; 
-  --footer-height:0px; 
+  --footer-height:40px; 
   --input-radius: 2px;
   --main-text-size: 14px;
   --input-large-width: 400px;
@@ -49,7 +49,7 @@
   --white-text-color: #ffffff;
   --main-text-color: #161e2e; 
   --secondary-text-color: #555d6d;
-  --assistant-text-color: #7d8695;
+  --c: #7d8695;
 
   --link-text-color: #0158f0;
 
@@ -352,14 +352,19 @@ button:focus-visible {
 
 /* -----------------------------------el-button---------------------------------- */
 .el-button  {
-  border-color: var(--primary-color) !important;
-  color:var(--primary-color) !important;
+  border-color: var(--default-color) !important;
+  color:var(--main-text-color) !important;
   height:32px !important;
   border-radius: var(--input-radius) !important;
   padding-left: 16px !important;
   padding-right: 16px !important;
 }
-
+.el-button:hover  {
+  border-color: var(--primary-color) !important;
+  color:var(--primary-color) !important;
+  background-color: none !important ;
+  
+}
 
 .el-button--large {
   
@@ -372,6 +377,7 @@ button:focus-visible {
 
 .el-button.is-text {
   color:var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
@@ -394,6 +400,7 @@ button:focus-visible {
 
 
 .el-button--text {
+  color: var(--primary-color) !important;
   border-color:var(--primary-color) !important;
 }
 
@@ -455,7 +462,7 @@ button:focus-visible {
 .el-menu-item.is-active,.el-menu-item:hover  {
   color:var(--primary-color)!important;
   background: var(--active-item-color) !important;
-  border-radius: var(--menu-radius) !important;
+  border-radius: 2px !important;
 }
 
 
@@ -494,7 +501,7 @@ button:focus-visible {
 
 .el-form-item__label {
   width:140px;
-  font-weight: bold;
+  color:var(--assistant-text-color) !important;
 }
 
 .el-form-item.is-error .el-input__wrapper {
@@ -597,11 +604,16 @@ button:focus-visible {
 
 /* -----------------------------------el-radio---------------------------------- */
 .el-radio {
+  color:var(--main-text-color) !important;
   --el-radio-input-border-color-hover: var(--primary-color) !important;
 }
-.el-radio .is-checked {
-  --el-radio-text-color: var(--primary-color) !important;
+.el-radio__input.is-checked .el-radio__inner  {
+  background-color: var(--primary-color) !important;
+  border-color:var(--primary-color) !important;
   
+}
+.el-radio__input.is-checked+.el-radio__label{
+  color:var(--primary-color) !important;
 }
 .el-radio-button {
   --el-radio-button-checked-bg-color:var(--primary-color) !important;

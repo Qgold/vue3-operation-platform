@@ -157,18 +157,18 @@
           >
             <template #default="{ row }">
               <el-button
-                type="primary"
+                text
                 link
                 @click="handleViewCouponDetail(row)"
               >查看</el-button>
               <el-button
-                type="text"
+                text
                 link
                 @click="handleEditCoupon(row)"
                 :disabled="row.status !== '未开始'"
               >编辑</el-button>
               <el-button
-                type="danger"
+                text
                 link
                 @click="handleStopCoupon(row)"
                 :disabled="row.status !== '进行中'"
@@ -244,18 +244,18 @@
           >
             <template #default="{ row }">
               <el-button
-                type="primary"
+                text
                 link
                 @click="handleViewDiscountDetail(row)"
               >查看</el-button>
               <el-button
-                type="primary"
+                text
                 link
                 @click="handleEditDiscount(row)"
                 :disabled="row.status !== '未开始'"
               >编辑</el-button>
               <el-button
-                type="danger"
+                text
                 link
                 @click="handleStopDiscount(row)"
                 :disabled="row.status !== '进行中'"
@@ -358,18 +358,18 @@
           >
             <template #default="{ row }">
               <el-button
-                type="primary"
+                text
                 link
                 @click="handleViewSeckillDetail(row)"
               >查看</el-button>
               <el-button
-                type="primary"
+                text
                 link
                 @click="handleEditSeckill(row)"
                 :disabled="row.status !== '未开始'"
               >编辑</el-button>
               <el-button
-                type="danger"
+                text
                 link
                 @click="handleStopSeckill(row)"
                 :disabled="row.status !== '进行中'"

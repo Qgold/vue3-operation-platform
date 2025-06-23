@@ -11,6 +11,7 @@ import { homeRoutes } from "./home.js";
 import { systemRoutes } from "./system.js";
 import { permissionRoutes } from "./permission.js";
 import {settingRoutes} from "./setting.js"
+import { exampleRoutes } from "./example.js";
 export const routes = [
   ...loginRoutes,
  ...homeRoutes,
@@ -22,6 +23,7 @@ export const routes = [
   ...permissionRoutes, 
   ...systemRoutes,
   ...technologyRoutes,
+  ...exampleRoutes,
     {
     name:  "other",
     path: "/other",

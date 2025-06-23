@@ -1,74 +1,85 @@
-<script setup>
-</script>
 <template>
-  <div class="not-found">
-    <div class="windmill">
-      <div class="blade"></div>
-      <div class="blade"></div>
-      <div class="blade"></div>
-      <div class="blade"></div>
+  <div class="not-found-container">
+    <div class="not-found-content">
+      <h1 class="not-found-title">抱歉，您访问的页面不存在！</h1>
+      <p class="not-found-tip">可以刷新试试或返回首页。</p>
+      <div class="not-found-actions">
+        <el-button @click="handleRefresh">刷新页面</el-button>
+        <el-button
+          type="primary"
+          @click="goHome"
+        >返回首页</el-button>
+      </div>
     </div>
-    <p class="font-bold">您的网页不见了......</p>
+    <div class="imgs">
+      <img
+        :src="XC"
+        style="width:73px;height:114px;"
+      >
+
+      <img
+        :src="found"
+        style="width:508px;height:157px;object-fit:contain;"
+      >
+
+    </div>
   </div>
 </template>
 
+<script setup>
+import { useRouter } from 'vue-router'
+import XC from '@/assets/xc.png'
+import found from '@/assets/404.png'
+
+const router = useRouter()
+
+const handleRefresh = () => {
+  window.location.reload()
+}
+
+const goHome = () => {
+  router.push('/')
+}
+</script>
+
 <style scoped>
-.not-found {
+.not-found-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+  width: 100vw;
+  padding-left: 118px;
+  padding-right: 118px;
+}
+
+.not-found-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+}
+.imgs {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  height: 100vh;
-  text-align: center;
-  width: 100vw;
+  align-items: center;
+}
+.not-found-title {
+  font-size: 24px;
+  color: var(--main-text-color);
+  margin-bottom: 24px;
 }
 
-.windmill {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  animation: spin 2s linear infinite;
+.not-found-tip {
+  font-size: 16px;
+  color: var(--secondary-text-color);
+  margin-bottom: 24px;
 }
 
-.blade {
-  position: absolute;
-  width: 10px;
-  height: 50px;
-  background-color: var(--primary-color);
-  top: 0;
-  left: 50%;
-  transform-origin: bottom center;
-}
-
-.blade:nth-child(1) {
-  transform: rotate(0deg);
-}
-
-.blade:nth-child(2) {
-  transform: rotate(90deg);
-}
-
-.blade:nth-child(3) {
-  transform: rotate(180deg);
-}
-
-.blade:nth-child(4) {
-  transform: rotate(270deg);
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-p {
-  margin-top: 20px;
-  font-size: 2rem;
-  color: var(--primary-color);
+.not-found-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 </style>
-

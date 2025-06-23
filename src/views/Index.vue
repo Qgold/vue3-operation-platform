@@ -386,6 +386,12 @@ const initPieChart = () => {
 </template>
 
 <style scoped lang="less">
+.content .page-container {
+  background: var(--bg-color) !important;
+  padding: 0px !important;
+}
+</style>
+<style scoped lang="less">
 .index-container {
 }
 

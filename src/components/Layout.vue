@@ -2,8 +2,7 @@
 import Header from './Header.vue'
 import { useRouter } from 'vue-router'
 import Menu from './Menu.vue'
-import Footer from './Footer.vue'
-import { ref, watchEffect } from 'vue'
+
 import TabBar from './TabBar.vue'
 import avator from '../assets/avator.jpg'
 import { Headset } from '@element-plus/icons-vue'
@@ -134,7 +133,7 @@ const goFeedback = () => {
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 0px;
 }
 .main-content::-webkit-scrollbar {
   display: none;
@@ -200,7 +199,7 @@ const goFeedback = () => {
 .content {
   flex: 1;
   position: relative;
-  margin: 56px 16px 0;
+  margin: 56px 16px 0 16px;
   background: var(--main-bg);
   border-radius: 4px;
   .content-container {
