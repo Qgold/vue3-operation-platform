@@ -314,7 +314,7 @@
               <el-table-column
                 prop="title"
                 label="会议主题"
-                width="180"
+                width="230"
               />
               <el-table-column
                 prop="room"
@@ -340,24 +340,21 @@
               <el-table-column
                 prop="duration"
                 label="会议时长"
-                width="100"
+                width="150"
               />
               <el-table-column
                 label="操作"
-                width="180"
                 fixed="right"
               >
                 <template #default="{ row }">
                   <el-button
                     link
                     @click="viewRecordDetail(row)"
-                    type="text"
-                    style="width: 72px;height:28px;"
+                    text
                   >查看详情</el-button>
                   <el-button
                     link
-                    type="primary"
-                    style="width: 72px;height:28px;"
+                    text
                     @click="downloadMinutes(row)"
                   >
                     会议纪要
@@ -446,12 +443,12 @@
                 <template #default="{ row }">
                   <el-button
                     link
+                    text
                     @click="editRoom(row)"
-                    style="width: 40px;height:28px;"
                   >编辑</el-button>
                   <el-button
                     link
-                    :type="row.status === 'available' ? 'danger' : 'primary'"
+                    text
                     style="width: 72px;height:28px;"
                     @click="toggleRoomStatus(row)"
                   >

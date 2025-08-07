@@ -195,7 +195,7 @@ onUnmounted(() => {
   width: 0;
 }
 .tab-item {
-  padding: 6px 18px;
+  padding: 3px 18px;
   flex: 0 0 auto; /* 禁止缩放，保持原始大小 */
 
   margin-right: 10px;
@@ -208,8 +208,10 @@ onUnmounted(() => {
   color: #333;
 }
 .tab-item.active {
-  background-color: var(--primary-color);
-  color: white;
+  /* background-color: var(--primary-color); */
+  /* color: white;
+  color */
+  color: var(--primary-color);
 }
 .tab-item:hover:not(.active) {
   color: var(--primary-color);

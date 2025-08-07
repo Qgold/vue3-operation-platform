@@ -58,7 +58,8 @@
   --disabled-text-color: #b5bcc8;
   --pressdown-text-color: #004ec2;
 
-  --active-item-color:#f2f7ff;
+  --active-item-color:rgba(1, 88, 240, 0.05);
+
 
 
 
@@ -93,8 +94,10 @@
   
 
 
-  --bg-color: #eff2f6;
-  --nav-bg:#FFF;
+  --bg-color: #edf2fc;
+  --nav-bg:#edf2fc;
+  --footer-color:#edf2fc;
+
   --card-bg:#eff2f6;
   --main-bg:#FFF;
   --area-bg:#004e9230;
@@ -443,10 +446,10 @@ button:focus-visible {
 .el-menu-item {
   color:var(--main-text-color) !important;
   height:32px !important;
-  margin-bottom: 8px !important;
+  margin-bottom:4px !important;
 }
 .el-menu-item:first-child {
-  margin-top: 8px !important;
+  margin-top: 4px !important;
 }
 .el-sub-menu__title {
   color:var(--main-text-color) !important;

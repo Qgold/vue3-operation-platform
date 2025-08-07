@@ -8,11 +8,14 @@ import avator from '../assets/avator.jpg'
 import { Headset } from '@element-plus/icons-vue'
 const router = useRouter()
 import { useAppStore } from '../store/app.js'
+import { ref } from 'vue'
+const showDrawer = ref(false)
 const app = useAppStore()
 const toggle = () => {
   app.setIsCollapse(!app.isCollapse)
 }
 const goFeedback = () => {
+  showDrawer.value = true
   router.push('/system/detail')
 }
 </script>
@@ -111,7 +114,9 @@ const goFeedback = () => {
             ></i></div>
         </template>
       </el-popover>
+
     </div>
+    <el-drawer v-model="showDrawer"></el-drawer>
   </div>
 </template>
 
@@ -219,7 +224,7 @@ const goFeedback = () => {
     right: 0;
     height: var(--footer-height);
     border-top: 10px solid var(--line-color);
-    background: white;
+    background: var(--footer-color);
     box-sizing: content-box;
   }
 

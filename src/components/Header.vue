@@ -209,7 +209,8 @@ function logout() {
   overflow: hidden;
   transition: all 0.3s ease-in-out;
   white-space: nowrap;
-  font-size: 16px;
+  font-size: 18px;
+  color: var(--primary-color);
 }
 
 .text-collapsed {
