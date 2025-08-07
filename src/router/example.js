@@ -18,6 +18,12 @@ export const exampleRoutes = [
             component:()=>import("../views/example/List.vue"),
             meta: { title: "列表",icon:'yijianfankui' ,isMenu:true},
           },
+          {
+            path:'/groupForm',
+            name:'groupForm',
+            component:()=>import("../views/example/GroupForm.vue"),
+            meta: { title: "分组表单",icon:'yijianfankui' ,isMenu:true},
+          },
         //   {
         //     path:'/logisticsTracking',
         //     name:'logisticsTracking',

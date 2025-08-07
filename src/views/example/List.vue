@@ -29,7 +29,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="名称">
+            <el-form-item label="测试筛选内容">
               <el-select
                 v-model="filterForm.content3"
                 placeholder="请选择"
@@ -48,7 +48,7 @@
         </el-row>
         <el-row :gutter="24">
           <el-col :span="8">
-            <el-form-item label="筛选内容222sdsdsd sd  d ">
+            <el-form-item label="测试一段长文字效果">
               <el-input
                 v-model="filterForm.content1"
                 placeholder="请输入内容"
@@ -63,45 +63,33 @@
               />
             </el-form-item>
           </el-col>
+
           <el-col :span="8">
-            <el-form-item label="名称">
-              <el-select
-                v-model="filterForm.content3"
-                placeholder="请选择"
-              >
-                <el-option
-                  label="选项1"
-                  value="1"
-                />
-                <el-option
-                  label="选项2"
-                  value="2"
-                />
-              </el-select>
-            </el-form-item>
+
+            <el-button
+              text
+              @click="toggleFilter"
+            >{{ isFilterCollapsed ? '展开' : '收起' }}</el-button>
+            <el-button
+              type="primary"
+              @click="handleQuery"
+            >
+              <el-icon>
+                <Search />
+              </el-icon>
+              查询
+            </el-button>
+            <el-button @click="handleReset">
+              <el-icon>
+                <RefreshRight />
+              </el-icon>
+              重置
+            </el-button>
           </el-col>
         </el-row>
 
         <div class="filter-actions">
-          <el-button
-            type="text"
-            @click="toggleFilter"
-          >{{ isFilterCollapsed ? '展开' : '收起' }}</el-button>
-          <el-button
-            type="primary"
-            @click="handleQuery"
-          >
-            <el-icon>
-              <Search />
-            </el-icon>
-            查询
-          </el-button>
-          <el-button @click="handleReset">
-            <el-icon>
-              <RefreshRight />
-            </el-icon>
-            重置
-          </el-button>
+
         </div>
       </el-form>
     </div>

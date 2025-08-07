@@ -71,13 +71,20 @@ export const routes = [
       meta: { title: "通知" ,isMenu:true  },
     }],
    
-  },
+  },  
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('../views/404.vue'),
-    meta: { title: '404 Not Found' ,isMenu:false  },
+    component: Layout,
+    meta: { title: '404 Not Found', isMenu: false },
     whiteUser: true,
+    children: [
+      {
+        path: '',
+        component: () => import('../views/404.vue'),
+        meta: { title: '404 Not Found', isMenu: false }
+      }
+    ]
   },
  
   // ...其他路由配置保持不变

@@ -47,9 +47,9 @@ const goHome = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 100vh;
+  padding-top: 300px;
   background-color: white;
-  width: 100vw;
+
   padding-left: 118px;
   padding-right: 118px;
 }
