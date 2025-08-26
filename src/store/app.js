@@ -56,7 +56,6 @@ export const useAppStore = defineStore('appStore', {
         ...this.rolePermissions,
         [roleId]: permissions,
       }
-      
       localStorage.setItem('rolePermissions', JSON.stringify(this.rolePermissions))
     },
     

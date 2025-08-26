@@ -107,9 +107,9 @@ router.beforeEach((to, from, next) => {
   if (!token && !app.whiteList.includes(to.path)) {
     next({ path: '/login' })
   } else {
-    if(app.hasPermission(to.path)){
-      //  ElMessage.error('没有访问权限')
-       next(true)
+    if(!app.hasPermission(to.path)){
+       ElMessage.error('没有访问权限')
+       next(false)
     }else {
        if (to.path === '/') {
         next({ name: 'index' })

@@ -330,7 +330,7 @@ const handlePermission = (row) => {
 }
 
 const savePermissions = async () => {
-  ElMessageBox.confirm('更改权限设置，需要重新登陆，是否确认更改？', '提示', {
+  ElMessageBox.confirm('更改权限设置，是否确认更改？', '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning'
@@ -348,6 +348,7 @@ const savePermissions = async () => {
 
         ElMessage.success('权限设置成功')
         permissionDialog.value.visible = false
+        window.location.reload()
       } catch (error) {
         ElMessage.error('权限设置失败')
       }
