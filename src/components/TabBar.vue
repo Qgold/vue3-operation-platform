@@ -195,23 +195,27 @@ onUnmounted(() => {
   width: 0;
 }
 .tab-item {
-  padding: 3px 18px;
+  padding: 5px 18px;
   flex: 0 0 auto; /* 禁止缩放，保持原始大小 */
-
   margin-right: 10px;
-  background-color: #fff;
-  border-radius: 3px;
+  background-color: #f7faff;
+  border-radius: 2px;
   cursor: pointer;
   position: relative;
 
-  font-size: 14px;
-  color: #333;
+  font-size: 12px;
+  color: #555d6d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .tab-item.active {
   /* background-color: var(--primary-color); */
   /* color: white;
   color */
   color: var(--primary-color);
+  background-color: white;
+  font-weight: bold;
 }
 .tab-item:hover:not(.active) {
   color: var(--primary-color);

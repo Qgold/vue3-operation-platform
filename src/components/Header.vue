@@ -158,7 +158,6 @@ function logout() {
   background: var(--nav-bg);
   border-bottom: solid 1px var(--line-color);
   min-width: 1280px;
-  z-index: 1000;
 }
 
 .header-controls {

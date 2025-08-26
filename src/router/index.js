@@ -14,8 +14,8 @@ import {settingRoutes} from "./setting.js"
 import { exampleRoutes } from "./example.js";
 export const routes = [
   ...loginRoutes,
- ...homeRoutes,
- ...dashboardRoutes,
+  ...homeRoutes,
+  ...dashboardRoutes,
   ...chainRoutes,
   ...customerRoutes,
   ...promotionRoutes,
@@ -24,7 +24,7 @@ export const routes = [
   ...systemRoutes,
   ...technologyRoutes,
   ...exampleRoutes,
-    {
+  {
     name:  "other",
     path: "/other",
     meta: { title: "进阶" ,icon:'xieyi',isMenu:true},
@@ -34,11 +34,11 @@ export const routes = [
       path: "/resourcce",
       name: "resourcce",
       component: ()=>import("../views/Notice.vue"),
-      meta: { title: "资源" ,isMenu:true },
+      meta: { title: "资源" , isMenu:true },
     }],
    
   },
-   {
+  {
     name:'website',
     path:'/website',
     meta: { title: "网站" ,isMenu:false},
@@ -101,12 +101,15 @@ router.beforeEach((to, from, next) => {
 
   const app = useAppStore()
 
+  //   app.$patch({
+  //   menuList: routes.filter((i) => i?.meta?.isMenu)
+  // })
   if (!token && !app.whiteList.includes(to.path)) {
     next({ path: '/login' })
   } else {
-    if(!app.hasPermission(to.path)){
-       ElMessage.error('没有访问权限')
-       next(false)
+    if(app.hasPermission(to.path)){
+      //  ElMessage.error('没有访问权限')
+       next(true)
     }else {
        if (to.path === '/') {
         next({ name: 'index' })
