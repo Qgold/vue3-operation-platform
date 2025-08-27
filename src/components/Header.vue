@@ -3,7 +3,7 @@ import avator from '../assets/avator.jpg'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAppStore } from '../store/app.js'
 import { useRouter } from 'vue-router'
-import { Search, ArrowDown } from '@element-plus/icons-vue'
+import { Search, ArrowDown, CaretBottom } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
 
 const search = ref(null)
@@ -12,7 +12,7 @@ const app = useAppStore()
 const router = useRouter()
 const { locale } = useI18n()
 const theme = ref(localStorage.getItem('darkMode') == 'true' ? true : false)
-
+const select = ref('')
 function setTheme(isDark) {
   theme.value = isDark
   window.toggleDarkMode()
@@ -40,14 +40,10 @@ function logout() {
     >
       <img
         class="logo"
-        src="../assets/025.png"
+        src="../assets/Logo.png"
         alt="logo"
-        style="width: 40px; height: 40px;margin-right: 10px;"
       >
-      <span
-        class="welcome-text"
-        :class="{ 'text-collapsed': app.isCollapse }"
-      >{{ $t('welcome') }}</span>
+
     </div>
 
     <div class="header-controls">
@@ -57,6 +53,26 @@ function logout() {
         v-model="search"
         class="search-input"
       >
+        <template #prepend>
+          <el-select
+            v-model="select"
+            placeholder="请选择"
+            style="width: 120px !important; "
+          >
+            <el-option
+              label="Restaurant"
+              value="1"
+            />
+            <el-option
+              label="Order No."
+              value="2"
+            />
+            <el-option
+              label="Tel"
+              value="3"
+            />
+          </el-select>
+        </template>
         <template #suffix>
           <el-icon>
             <Search />
@@ -70,12 +86,11 @@ function logout() {
         @command="changeLanguage"
         class="header-item"
       >
-        <span class="dropdown-link">
-          {{ $t('lanuage') }}
-          <el-icon class="el-icon--right">
-            <arrow-down />
-          </el-icon>
-        </span>
+        <img
+          src="../assets/language.png"
+          alt="语言"
+          style="width: 24px; height: 24px; margin-right: 10px; cursor: pointer;"
+        />
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item command="zh-CN">中文</el-dropdown-item>
@@ -91,12 +106,11 @@ function logout() {
         @command="setTheme"
         class="header-item"
       >
-        <span class="dropdown-link">
-          {{ $t('theme') }}
-          <el-icon class="el-icon--right">
-            <arrow-down />
-          </el-icon>
-        </span>
+        <img
+          src="../assets/theme.png"
+          alt="主题"
+          style="width: 24px; height: 24px; margin-right: 10px;cursor: pointer;"
+        />
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item :command="false">浅色模式</el-dropdown-item>
@@ -111,12 +125,11 @@ function logout() {
         title="退出登录"
         @click="dialogVisible=true;"
       >
-        <!-- <span>{{ $t('welcomeU') }}，{{ app.userName }}</span> -->
-        <el-avatar
-          :size="32"
-          :src="avator"
-        />
+        煜
       </div>
+      <el-icon>
+        <CaretBottom />
+      </el-icon>
     </div>
 
     <!-- 退出确认对话框 -->
@@ -159,7 +172,17 @@ function logout() {
   border-bottom: solid 1px var(--line-color);
   min-width: 1280px;
 }
-
+.logo {
+  height: 24px;
+  margin-right: 10px;
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast; /* Chrome/Safari */
+  image-rendering: crisp-edges; /* Firefox */
+  -ms-interpolation-mode: nearest-neighbor; /* IE */
+  transform: translateZ(0); /* 开启GPU加速 */
+  backface-visibility: hidden; /* 防止在某些浏览器中出现模糊 */
+  perspective: 1000px; /* 提高渲染质量 */
+}
 .header-controls {
   display: flex;
   align-items: center;
@@ -168,9 +191,21 @@ function logout() {
 }
 
 .search-input {
-  width: 240px;
+  width: 300px !important;
+
+  border: 1px solid white !important;
 }
 
+.el-input {
+  --el-input-border: 1px solid white !important;
+  --el-input-border-color: white !important;
+  --el-input-bg-color: #ffffff30 !important;
+}
+.el-input-group__append,
+.el-input-group__prepend {
+  // --el-select-input-color: red !important;
+  background-color: #ffffff30 !important;
+}
 .header-item {
   height: var(--header-height);
   display: flex;
@@ -223,6 +258,14 @@ function logout() {
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e0e3e7;
+  font-size: 20px;
+  color: var(--info);
+  justify-content: center;
 }
 
 :deep(.el-dropdown-menu__item) {

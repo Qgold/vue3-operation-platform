@@ -24,12 +24,12 @@ export const exampleRoutes = [
             component:()=>import("../views/example/GroupForm.vue"),
             meta: { title: "分组表单",icon:'yijianfankui' ,isMenu:true},
           },
-        //   {
-        //     path:'/logisticsTracking',
-        //     name:'logisticsTracking',
-        //     component:()=>import("../views/chain/LogisticsTracking.vue"),
-        //     meta: { title: "物流跟踪",icon:'yijianfankui' ,isMenu:true},
-        //   },
+          {
+            path:'/componetEax',
+            name:'componetEax',
+            component:()=>import("../views/example/ComponentGroup.vue"),
+            meta: { title: "组件示例",icon:'yijianfankui' ,isMenu:true},
+          },
           
         ]
       }

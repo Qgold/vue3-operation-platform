@@ -15,6 +15,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  --max-tag-height:32px;
+  --medium-tag-height:24px;
+  --small-tag-height:20px;
+  --mini-tag-height:16px;
+
+  
   --collapse-height:32px;
   --header-height:56px; 
   --footer-height:40px; 
@@ -30,9 +36,9 @@
   --primary-bg: #e5efff;
   --primary-border: #0158f0;
 
-  --warning: #e0a100;
+  --warning: #f7b400;
   --waring-bg: #fff8e5;
-  --warning-border: #e0a100;
+  --warning-border: #f7b400;
 
   --success:#00b25c;
   --success-bg:#d8f2e5;
@@ -49,7 +55,7 @@
   --white-text-color: #ffffff;
   --main-text-color: #161e2e; 
   --secondary-text-color: #555d6d;
-  --c: #7d8695;
+  --assistant-text-color: #7d8695;
 
   --link-text-color: #0158f0;
 
@@ -330,7 +336,13 @@ button:focus-visible {
 
 
 
-
+.el-tree {
+  --el-tree-node-hover-bg-color:  var(--active-item-color) !important;
+  /* --el-tree-text-color:var(--primary-color) !important; */
+  font-size: 14px !important;
+  color:var(--main-text-color) !important;
+  --el-tree-expand-icon-color:var(--main-text-color) !important;
+}
 
 
 
@@ -459,11 +471,15 @@ button:focus-visible {
 }
 .el-sub-menu__title:hover {
   background-color: var(--active-item-color) !important;
-  color:var(--primary-color) !important;
+  /* color:var(--primary-color) !important; */
 }
 
-.el-menu-item.is-active,.el-menu-item:hover  {
+.el-menu-item.is-active  {
   color:var(--primary-color)!important;
+  background: var(--active-item-color) !important;
+  border-radius: 2px !important;
+}
+.el-menu-item:hover {
   background: var(--active-item-color) !important;
   border-radius: 2px !important;
 }
@@ -560,7 +576,10 @@ button:focus-visible {
 .el-select-dropdown__item.is-selected {
   color:var(--hover-text-color) !important;
 }
-
+.el-select-dropdown__item.is-hovering  {
+ background-color: #e5efff !important;
+ color:var(--primary-color) !important;
+}
 .el-select__wrapper.is-focused {
   box-shadow: 0 0 0 1px var(--hover-text-color) inset  !important;
 }
@@ -788,4 +807,12 @@ button:focus-visible {
 .el-dropdown-menu li:hover{
   background-color: var(--active-item-color) !important;
   color:var(--primary-color) !important;
+}
+
+.el-slider {
+  --el-slider-main-bg-color:var(--primary-color) !important;
+  --el-slider-disabled-color:var(--highlight-disabled-color) !important;
+  --el-slider-height:4px !important;
+  --el-slider-border-radius:4px !important;
+  --el-slider-button-size:16px !important;
 }

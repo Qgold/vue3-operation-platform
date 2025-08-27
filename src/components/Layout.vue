@@ -65,7 +65,41 @@ const goFeedback = () => {
             </router-view>
           </div>
         </div>
-        <div class="content-bottom"></div>
+        <div class="content-bottom">
+
+          <div class="avatar-stack">
+            <el-avatar
+              class="stacked-avatar"
+              size="small"
+              :src="avator"
+            />
+            <el-avatar
+              class="stacked-avatar"
+              size="small"
+              :src="avator"
+            />
+            <el-avatar
+              class="stacked-avatar"
+              size="small"
+              :src="avator"
+            />
+            <el-avatar
+              class="stacked-avatar"
+              size="small"
+              :src="avator"
+            />
+            <el-avatar
+              class="stacked-avatar"
+              size="small"
+              :src="avator"
+            />
+            <el-avatar
+              class="stacked-avatar"
+              size="small"
+              :src="avator"
+            />
+          </div>
+        </div>
       </main>
     </div>
 
@@ -226,6 +260,39 @@ const goFeedback = () => {
     border-top: 10px solid var(--line-color);
     background: var(--footer-color);
     box-sizing: content-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    // padding-right: 20px;
+
+    .avatar-stack {
+      display: flex;
+      align-items: center;
+      // padding: 0 10px;
+
+      .stacked-avatar {
+        margin-right: -8px; // 负margin创建层叠效果
+        border: 2px solid var(--footer-color); // 添加边框使层叠更清晰
+        transition: all 0.3s ease;
+        cursor: pointer;
+        width: 24px;
+
+        &:hover {
+          transform: translateY(-5px); // 悬停时向上移动
+          z-index: 1; // 确保悬停的头像在最上层
+        }
+
+        // 最后一个头像不需要负margin
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+
+      &:hover .stacked-avatar:not(:hover) {
+        // 当鼠标悬停在组上时，未被悬停的头像稍微向下移动
+        transform: translateY(2px);
+      }
+    }
   }
 
   .page-container {
