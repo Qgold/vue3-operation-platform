@@ -32,12 +32,15 @@ const goFeedback = () => {
           <Menu />
         </div>
         <div class="sidebar-bottom">
-          <span
-            class="iconfont icon-zidingyizhibiao"
-            :class="{ 'rotate': app.isCollapse }"
-            @click="toggle"
-            title="折叠菜单"
-          />
+          <div class="icon-wrapper">
+            <span
+              class="iconfont icon-zidingyizhibiao"
+              :class="{ 'rotate': app.isCollapse }"
+              @click="toggle"
+              title="折叠菜单"
+            />
+          </div>
+
         </div>
       </aside>
 
@@ -184,21 +187,30 @@ const goFeedback = () => {
   transition: width 0.3s;
 
   .menu-container {
-    height: calc(100vh - var(--header-height) - var(--collapse-height));
+    height: calc(100vh - var(--header-height) - var(--collapse-height) - 40px);
     overflow-y: auto;
   }
 
   .sidebar-bottom {
     position: absolute;
-    bottom: 0;
+    bottom: calc(var(--footer-height) + 8px);
     left: 0;
     right: 0;
     height: var(--collapse-height);
     border-top: 1px solid var(--line-color);
     display: flex;
     justify-content: flex-end;
-    padding-right: 20px;
+    padding-right: 0px;
     align-items: center;
+  }
+  .icon-wrapper {
+    width: 32px;
+    border-radius: 2px;
+    height: 32px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .iconfont {
     font-size: 14px;
