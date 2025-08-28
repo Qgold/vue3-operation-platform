@@ -23,7 +23,7 @@
   
   --collapse-height:32px;
   --header-height:56px; 
-  --footer-height:20px; 
+  --footer-height:30px; 
   --input-radius: 2px;
   --main-text-size: 14px;
   --input-large-width: 400px;
@@ -270,6 +270,7 @@ button:focus-visible {
 
 .el-loading-mask {
   position: relative;
+  background-color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .el-loading-mask::after {
@@ -283,6 +284,7 @@ button:focus-visible {
 .el-loading-spinner .el-loading-text {
   margin: 3px 0 3px 10px !important;
   color: var(--primary-color);
+
 }
 
 .el-loading-spinner .circular {
@@ -564,7 +566,9 @@ button:focus-visible {
   --el-select-input-color:var(--main-text-color) !important;
   --el-select-input-font-size: var(--main-text-size) !important;
 }
-
+.el-select__placeholder {
+  color:var(--main-text-color) !important;
+}
 .el-select__placeholder.is-transparent  {
   color:var(--default-color) !important;
 }

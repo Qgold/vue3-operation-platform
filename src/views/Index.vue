@@ -2,11 +2,11 @@
 import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 import { Money, User, Document, PieChart } from '@element-plus/icons-vue'
-
+import Counter from '../components/Counter.vue'
 const timeRange = ref('month')
 const lineChartRef = ref(null)
 const pieChartRef = ref(null)
-
+const loading = ref(false)
 // 待办事项数据
 const todoList = ref([
   {
@@ -157,7 +157,11 @@ const initPieChart = () => {
 </script>
 
 <template>
-  <div class="index-container">
+  <div
+    class="index-container"
+    v-loading="loading"
+  >
+
     <!-- 顶部四个卡片 -->
     <el-row
       :gutter="20"
@@ -271,15 +275,16 @@ const initPieChart = () => {
         <div class="card-header">
           <span>待办事项</span>
           <el-button
-            type="primary"
             link
+            text
           >查看全部</el-button>
         </div>
       </template>
       <div
         class="todo-list"
-        style="height: 300px;"
+        style="height: 300px;padding-left:10px;"
       >
+
         <el-timeline>
           <el-timeline-item
             v-for="(todo, index) in todoList"
@@ -301,7 +306,7 @@ const initPieChart = () => {
         <div class="card-header">
           <span>询价结果公示</span>
           <el-button
-            type="primary"
+            text
             link
           >更多</el-button>
         </div>

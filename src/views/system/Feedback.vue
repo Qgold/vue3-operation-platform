@@ -42,7 +42,7 @@ const submit = () => {
         />
       </el-select>
       <el-button
-        type="primary"
+        text
         @click="router.push('/system/record')"
       >反馈记录</el-button>
     </div>
