@@ -565,7 +565,7 @@ button:focus-visible {
   --el-select-input-font-size: var(--main-text-size) !important;
 }
 
-.el-select__placeholder {
+.el-select__placeholder.is-transparent  {
   color:var(--default-color) !important;
 }
 

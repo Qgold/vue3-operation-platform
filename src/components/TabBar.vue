@@ -1,47 +1,65 @@
 <template>
-  <div class="tab-bar">
-    <!-- <el-page-header @back="router.go(-1)">
-
-    </el-page-header> -->
+  <div class="tab-bar-container">
     <div
-      v-for="(tab, index) in tabs"
-      :key="index"
-      class="tab-item"
-      :class="{ active: currentTab === tab.path }"
-      @click="selectTab(tab.path)"
-      @contextmenu.prevent="showContextMenu($event, tab, index)"
+      class="nav-button prev"
+      @click="scrollTabs('left')"
+      :class="{ disabled: isScrollStart }"
     >
-      {{ tab.title }}
-      <span
-        class="close-btn"
-        v-if='tabs.length > 1'
-        @click.stop="closeTab(index,tab)"
-      >×</span>
+      <el-icon>
+        <ArrowLeft />
+      </el-icon>
     </div>
 
-    <!-- 右键菜单 -->
-    <div
-      v-if="contextMenu.visible"
-      class="context-menu"
-      :style="{
+    <div class="tab-bar">
+      <div
+        v-for="(tab, index) in tabs"
+        :key="index"
+        class="tab-item"
+        :class="{ active: currentTab === tab.path }"
+        @click="selectTab(tab.path)"
+        @contextmenu.prevent="showContextMenu($event, tab, index)"
+      >
+        {{ tab.title }}
+        <span
+          class="close-btn"
+          v-if='tabs.length > 1'
+          @click.stop="closeTab(index,tab)"
+        >×</span>
+      </div>
+
+      <!-- 右键菜单 -->
+      <div
+        v-if="contextMenu.visible"
+        class="context-menu"
+        :style="{
         left: contextMenu.x + 'px',
         top: contextMenu.y + 'px'
       }"
-    >
-      <div
-        class="menu-item"
-        @click="closeTab(contextMenu.tabIndex,contextMenu.currentTab)"
-      >关闭当前标签</div>
-      <div
-        class="menu-item"
-        @click="closeOtherTabs"
-      >关闭其他标签</div>
-      <div
-        class="menu-item"
-        @click="closeRightTabs"
-      >关闭右侧标签</div>
-    </div>
+      >
+        <div
+          class="menu-item"
+          @click="closeTab(contextMenu.tabIndex,contextMenu.currentTab)"
+        >关闭当前标签</div>
+        <div
+          class="menu-item"
+          @click="closeOtherTabs"
+        >关闭其他标签</div>
+        <div
+          class="menu-item"
+          @click="closeRightTabs"
+        >关闭右侧标签</div>
+      </div>
 
+      <div
+        class="nav-button next"
+        @click="scrollTabs('right')"
+        :class="{ disabled: isScrollEnd }"
+      >
+        <el-icon>
+          <ArrowRight />
+        </el-icon>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,6 +67,7 @@
 import { ref, watch, onMounted, reactive, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '../store/app'
+import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 const app = useAppStore()
 const route = useRoute()
 const router = useRouter()
@@ -158,20 +177,59 @@ const closeRightTabs = () => {
   closeMenu()
 }
 // 点击外部关闭菜单
+// 检查是否可以滚动
+const isScrollStart = ref(true)
+const isScrollEnd = ref(false)
+
+// 滚动标签栏
+const scrollTabs = (direction) => {
+  const tabBar = document.querySelector('.tab-bar')
+  if (tabBar) {
+    const scrollAmount = 200 // 每次滚动的距离
+    const newScrollLeft =
+      direction === 'left'
+        ? tabBar.scrollLeft - scrollAmount
+        : tabBar.scrollLeft + scrollAmount
+
+    tabBar.scrollTo({
+      left: newScrollLeft,
+      behavior: 'smooth'
+    })
+  }
+}
+
+// 检查滚动位置
+const checkScroll = () => {
+  const tabBar = document.querySelector('.tab-bar')
+  if (tabBar) {
+    isScrollStart.value = tabBar.scrollLeft <= 0
+    isScrollEnd.value =
+      tabBar.scrollLeft + tabBar.clientWidth >= tabBar.scrollWidth
+  }
+}
+
 const clickOutsideHandler = (e) => {
   if (!e.target.closest('.context-menu')) {
     closeMenu()
   }
 }
+
 onMounted(() => {
   const tabBar = document.querySelector('.tab-bar')
   if (tabBar) {
+    // 添加滚轮事件
     tabBar.addEventListener('wheel', (e) => {
       if (e.deltaY !== 0) {
         e.preventDefault()
         tabBar.scrollLeft += e.deltaY
       }
     })
+
+    // 添加滚动事件监听
+    tabBar.addEventListener('scroll', checkScroll)
+
+    // 初始检查滚动状态
+    checkScroll()
   }
   document.addEventListener('click', clickOutsideHandler)
 })
@@ -181,14 +239,58 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="less">
+.tab-bar-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: var(--bg-color);
+  width: 100%;
+}
+
+.nav-button {
+  position: sticky;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.3s;
+
+  &.prev {
+    left: 0;
+    margin-right: 8px;
+  }
+
+  &.next {
+    right: 0;
+    margin-left: 0px;
+  }
+
+  &:hover:not(.disabled) {
+    background-color: #e6e8eb;
+    color: var(--primary-color);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    color: #c0c4cc;
+  }
+}
+
 .tab-bar {
   display: flex;
   overflow-x: auto;
   background-color: var(--bg-color);
-  width: 100%;
-  scroll-padding-inline: 10px; /* Optional padding while scrolling */
-  scroll-behavior: smooth; /* Smooth scrolling if triggered programmatically */
+  flex: 1;
+  scroll-padding-inline: 10px;
+  scroll-behavior: smooth;
 }
 .tab-bar::-webkit-scrollbar {
   display: none;
