@@ -31,8 +31,8 @@ class Firework {
 
     // 轨迹计算
     this.angle = Math.atan2(targetY - startY, targetX - startX)
-    this.speed = 8
-    this.acceleration = 1.025
+    this.speed = 5  // 降低发射初始速度
+    this.acceleration = 1.015  // 降低加速度
     this.brightness = 70
     this.targetRadius = 1
     this.trail = []
@@ -83,13 +83,18 @@ class Particle {
     this.x = x
     this.y = y
     this.angle = Math.random() * Math.PI * 2
-    this.speed = Math.random() * 8 + 1
-    this.friction = 0.95
-    this.gravity = 0.98
-    this.brightness = Math.random() * 50 + 50
+    this.speed = Math.random() * 8 + 2 // 降低粒子初始速度
+    this.friction = 0.97 // 增加摩擦力，让粒子减速更快
+    this.gravity = 0.35 // 减小重力，让粒子下落更慢
+    this.size = Math.random() * 3 + 2
+    this.brightness = Math.random() * 60 + 40
     this.alpha = 1
-    this.decay = Math.random() * 0.03 + 0.02
-    this.pink = `hsla(350, 100%, ${this.brightness}%, ${this.alpha})`
+    this.decay = Math.random() * 0.015 + 0.008 // 降低衰减速度，让粒子存在更久
+    this.color = Math.random() < 0.3 ? 'white' : 'pink' // 30%概率为白色，增加层次感
+    this.pink =
+      this.color === 'pink'
+        ? `hsla(350, 100%, ${this.brightness}%, ${this.alpha})`
+        : `hsla(0, 0%, 100%, ${this.alpha})`
   }
 
   update() {
@@ -97,22 +102,46 @@ class Particle {
     this.x += Math.cos(this.angle) * this.speed
     this.y += Math.sin(this.angle) * this.speed + this.gravity
     this.alpha -= this.decay
-    this.pink = `hsla(350, 100%, ${this.brightness}%, ${this.alpha})`
+    this.size *= 0.99 // 粒子大小逐渐减小
+    this.pink =
+      this.color === 'pink'
+        ? `hsla(350, 100%, ${this.brightness}%, ${this.alpha})`
+        : `hsla(0, 0%, 100%, ${this.alpha})`
   }
 
   draw() {
     ctx.beginPath()
-    ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2)
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
     ctx.fillStyle = this.pink
+    ctx.shadowBlur = 15
+    ctx.shadowColor = this.pink
     ctx.fill()
+    ctx.shadowBlur = 0 // 重置阴影，避免影响其他绘制
   }
 }
 
 // 创建爆炸粒子
 function createParticles(x, y) {
-  const particleCount = 50
+  const particleCount = 120 // 增加粒子数量
+  const colors = ['350', '335', '360'] // 不同的粉色色调
+
   for (let i = 0; i < particleCount; i++) {
     particles.push(new Particle(x, y))
+
+    // 创建次级爆炸效果
+    if (Math.random() < 0.2) {
+      // 20%概率产生次级爆炸
+      setTimeout(() => {
+        const subParticles = 8
+        const radius = Math.random() * 30 + 20
+        for (let j = 0; j < subParticles; j++) {
+          const angle = (j / subParticles) * Math.PI * 2
+          const subX = x + Math.cos(angle) * radius
+          const subY = y + Math.sin(angle) * radius
+          particles.push(new Particle(subX, subY))
+        }
+      }, Math.random() * 300 + 200) // 200-500ms后产生次级爆炸
+    }
   }
 }
 
@@ -128,8 +157,11 @@ function launchFirework() {
 
 // 动画循环
 function animate() {
-  ctx.fillStyle = 'rgba(11, 19, 43, 0.2)'
+  ctx.fillStyle = 'rgba(11, 19, 43, 0.15)' // 减小透明度，让拖尾效果更明显
   ctx.fillRect(0, 0, canvas.value.width, canvas.value.height)
+
+  // 添加模糊效果，让整体更柔和
+  //   ctx.globalCompositeOperation = 'lighter'
 
   // 更新和绘制烟花
   fireworks.forEach((firework) => {
