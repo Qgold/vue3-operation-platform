@@ -1,3 +1,4 @@
+import { KeepAlive } from "vue";
 import Layout from "../components/Layout.vue";
 export const exampleRoutes = [
       {
@@ -28,7 +29,7 @@ export const exampleRoutes = [
             path:'/componetEax',
             name:'componetEax',
             component:()=>import("../views/example/ComponentGroup.vue"),
-            meta: { title: "组件示例",icon:'yijianfankui' ,isMenu:true},
+            meta: { title: "组件示例",icon:'yijianfankui' ,isMenu:true,keepAlive:true},
           },
           
         ]

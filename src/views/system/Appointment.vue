@@ -44,7 +44,8 @@
                     <div class="flex justify-between items-center">
                       <span>{{ formatDate(selectedDate) }} 会议安排</span>
                       <el-button
-                        type="primary"
+                        text
+                        link
                         @click="showAppointmentForm = true"
                       >
                         预约会议
@@ -383,7 +384,8 @@
           >
             <div class="flex justify-end mb-4">
               <el-button
-                type="primary"
+                text
+                link
                 @click="showAddRoomDialog = true"
               >
                 添加会议室

@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, toRefs, watchEffect } from 'vue'
 
 // 配置常量
 const DURATION = 2000 // 动画持续时间（毫秒）
@@ -48,6 +48,10 @@ defineProps({
   suffix: {
     type: String,
     default: ''
+  },
+  num: {
+    type: Number,
+    default: 7140909
   }
 })
 onMounted(() => {

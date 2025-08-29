@@ -1,5 +1,7 @@
 <script setup>
 import { SuccessFilled } from '@element-plus/icons-vue'
+import Counter from '../../components/Counter.vue'
+import Fireworks from '../../components/Fireworks.vue'
 import { ref } from 'vue'
 const tip = ref('操作成功')
 const value1 = ref(60)
@@ -33,33 +35,7 @@ const formatTooltip = (val) => {
 
 <template>
   <div class="container">
-
-    <div class="slide-block">
-      <div class="slider-demo-block">
-
-        <el-slider
-          v-model="value1"
-          :format-tooltip="formatTooltip"
-        />
-      </div>
-      <div class="slider-demo-block">
-
-        <el-select
-          v-model="value"
-          clearable
-          placeholder="Select"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </div>
-
-    </div>
-
+    <Fireworks />
   </div>
 </template>
 
