@@ -23,98 +23,230 @@ class Firework {
     this.targetX = targetX
     this.targetY = targetY
 
-    // 计算距离
-    this.distanceToTarget = Math.sqrt(
-      Math.pow(targetX - startX, 2) + Math.pow(targetY - startY, 2)
-    )
-    this.distanceTraveled = 0
+    // 计算基础角度（主要是向上）
+    this.baseAngle = Math.PI * 1.5 // 默认向上
 
-    // 轨迹计算
-    this.angle = Math.atan2(targetY - startY, targetX - startX)
-    this.speed = 5  // 降低发射初始速度
-    this.acceleration = 1.015  // 降低加速度
-    this.brightness = 70
-    this.targetRadius = 1
+    // 添加轻微的随机偏移，使其不会完全垂直
+    const angleVariation = (Math.random() - 0.5) * 0.2
+    this.angle = this.baseAngle + angleVariation
+
+    // 更自然的速度设置
+    this.speed = 2 // 非常慢的初始速度
+    this.acceleration = 1.03 // 更缓和的加速度
+    this.maxSpeed = 6 // 限制最大速度
+
+    // 摇摆效果
+    this.wobble = 0
+    this.wobbleSpeed = (Math.random() - 0.5) * 0.03 // 轻微的摇摆速度
+
+    // 轨迹样式
     this.trail = []
-    this.trailLength = 5
-    this.pink = `hsla(350, 100%, ${this.brightness}%, 1)`
+    this.trailLength = 5 // 稍长的尾迹
+    this.hue = 45 // 金色尾迹
+    this.brightness = 60
+    this.alpha = 1
+
+    // 火花效果
+    this.sparkSize = 1
+    this.sparkFreq = 0.05 // 火花出现频率
+    this.sparks = []
   }
 
   update() {
+    // 更新轨迹
     this.trail.push([this.x, this.y])
     if (this.trail.length > this.trailLength) {
       this.trail.shift()
     }
 
-    this.speed *= this.acceleration
-
-    const xVelocity = Math.cos(this.angle) * this.speed
-    const yVelocity = Math.sin(this.angle) * this.speed
-
-    this.distanceTraveled = Math.sqrt(
-      Math.pow(this.x - this.startX, 2) + Math.pow(this.y - this.startY, 2)
-    )
-
-    if (this.distanceTraveled >= this.distanceToTarget) {
-      createParticles(this.targetX, this.targetY)
-      fireworks = fireworks.filter((fw) => fw !== this)
-    } else {
-      this.x += xVelocity
-      this.y += yVelocity
+    // 速度控制
+    if (this.speed < this.maxSpeed) {
+      this.speed *= this.acceleration
     }
+
+    // 更新摇摆效果
+    this.wobble += this.wobbleSpeed
+    const wobbleX = Math.sin(this.wobble) * 1.5
+
+    // 计算运动
+    const yVelocity = -this.speed // 向上的速度（负值表示向上）
+    this.y += yVelocity
+    this.x += wobbleX // 添加轻微的左右摇摆
+
+    // 检查是否到达目标高度
+    if (this.y <= this.targetY) {
+      createParticles(this.x, this.y)
+      fireworks = fireworks.filter((fw) => fw !== this)
+    }
+
+    // 火花效果
+    if (Math.random() < this.sparkFreq) {
+      this.sparks.push({
+        x: this.x,
+        y: this.y,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: Math.random() * 1,
+        life: 1
+      })
+    }
+
+    // 更新火花
+    this.sparks.forEach((spark, i) => {
+      spark.x += spark.vx
+      spark.y += spark.vy
+      spark.life *= 0.95
+      if (spark.life <= 0.01) {
+        this.sparks.splice(i, 1)
+      }
+    })
   }
 
   draw() {
-    ctx.beginPath()
-    const trailEndIndex = this.trail.length - 1
-    ctx.moveTo(this.trail[trailEndIndex][0], this.trail[trailEndIndex][1])
-    for (let i = trailEndIndex; i > 0; i--) {
-      const point = this.trail[i - 1]
-      ctx.lineTo(point[0], point[1])
+    // 绘制主轨迹
+    if (this.trail.length > 1) {
+      ctx.beginPath()
+      const gradient = ctx.createLinearGradient(
+        this.trail[0][0],
+        this.trail[0][1],
+        this.x,
+        this.y
+      )
+      gradient.addColorStop(
+        0,
+        `hsla(${this.hue}, 100%, ${this.brightness}%, 0)`
+      )
+      gradient.addColorStop(
+        1,
+        `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`
+      )
+
+      ctx.strokeStyle = gradient
+      ctx.lineWidth = 2
+      ctx.shadowBlur = 6
+      ctx.shadowColor = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`
+
+      ctx.moveTo(this.trail[0][0], this.trail[0][1])
+      for (let i = 1; i < this.trail.length; i++) {
+        const [x, y] = this.trail[i]
+        ctx.lineTo(x, y)
+      }
+
+      ctx.stroke()
     }
-    ctx.strokeStyle = this.pink
-    ctx.stroke()
+
+    // 绘制火花
+    this.sparks.forEach((spark) => {
+      ctx.beginPath()
+      ctx.arc(spark.x, spark.y, this.sparkSize * spark.life, 0, Math.PI * 2)
+      ctx.fillStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${spark.life})`
+      ctx.fill()
+    })
+
+    // 重置阴影
+    ctx.shadowBlur = 0
   }
 }
 
 // 粒子类
 class Particle {
-  constructor(x, y) {
+  constructor(x, y, mainColor) {
     this.x = x
     this.y = y
-    this.angle = Math.random() * Math.PI * 2
-    this.speed = Math.random() * 8 + 2 // 降低粒子初始速度
-    this.friction = 0.97 // 增加摩擦力，让粒子减速更快
-    this.gravity = 0.35 // 减小重力，让粒子下落更慢
-    this.size = Math.random() * 3 + 2
-    this.brightness = Math.random() * 60 + 40
+
+    // 创建更有规律的放射状效果
+    const angleVariation = (Math.random() - 0.5) * 0.3 // 小角度随机变化
+    this.angle = Math.PI * 2 * Math.random() + angleVariation
+
+    // 速度更集中，创造更统一的绽放效果
+    const baseSpeed = 18
+    this.speed = baseSpeed + (Math.random() - 0.5) * 5
+
+    // 调整物理参数使运动更像真实烟花
+    this.friction = 0.96
+    this.gravity = 0.45
+
+    // 粒子大小随距离变化
+    this.baseSize = Math.random() * 2.5 + 1.5
+    this.size = this.baseSize
+
+    // 亮度和透明度
+    this.brightness = Math.random() * 40 + 60
     this.alpha = 1
-    this.decay = Math.random() * 0.015 + 0.008 // 降低衰减速度，让粒子存在更久
-    this.color = Math.random() < 0.3 ? 'white' : 'pink' // 30%概率为白色，增加层次感
-    this.pink =
-      this.color === 'pink'
-        ? `hsla(350, 100%, ${this.brightness}%, ${this.alpha})`
-        : `hsla(0, 0%, 100%, ${this.alpha})`
+    this.decay = Math.random() * 0.01 + 0.005
+
+    // 定义烟花颜色配置
+    const colors = [
+      { hue: 350, saturation: 100, probability: 0.25 }, // 粉色
+      { hue: 45, saturation: 100, probability: 0.2 }, // 金色
+      { hue: 280, saturation: 100, probability: 0.2 }, // 紫色
+      { hue: 0, saturation: 100, probability: 0.15 }, // 红色
+      { hue: 180, saturation: 85, probability: 0.1 }, // 青色
+      { hue: 0, saturation: 0, probability: 0.1 } // 白色（用于点缀）
+    ]
+
+    // 选择颜色
+    let random = Math.random()
+    let sum = 0
+    this.color = colors[0] // 默认为粉色
+    for (let c of colors) {
+      sum += c.probability
+      if (random <= sum) {
+        this.color = c
+        break
+      }
+    }
+
+    this.updateColor()
+  }
+
+  updateColor() {
+    // 特殊处理金色
+    if (this.color.hue === 45) {
+      // 金色
+      const goldLightness = Math.min(90, this.brightness + 20)
+      this.colorStr = `hsla(${this.color.hue}, ${this.color.saturation}%, ${goldLightness}%, ${this.alpha})`
+    }
+    // 特殊处理白色
+    else if (this.color.saturation === 0) {
+      this.colorStr = `hsla(0, 0%, 100%, ${this.alpha})`
+    }
+    // 其他颜色
+    else {
+      this.colorStr = `hsla(${this.color.hue}, ${this.color.saturation}%, ${this.brightness}%, ${this.alpha})`
+    }
   }
 
   update() {
+    // 速度衰减
     this.speed *= this.friction
-    this.x += Math.cos(this.angle) * this.speed
-    this.y += Math.sin(this.angle) * this.speed + this.gravity
-    this.alpha -= this.decay
-    this.size *= 0.99 // 粒子大小逐渐减小
-    this.pink =
-      this.color === 'pink'
-        ? `hsla(350, 100%, ${this.brightness}%, ${this.alpha})`
-        : `hsla(0, 0%, 100%, ${this.alpha})`
+
+    // 计算移动距离
+    const moveX = Math.cos(this.angle) * this.speed
+    const moveY = Math.sin(this.angle) * this.speed + this.gravity
+
+    // 更新位置
+    this.x += moveX
+    this.y += moveY
+
+    // 粒子大小随距离衰减
+    const speedFactor = Math.max(0.4, this.speed / 15)
+    this.size = this.baseSize * speedFactor
+
+    // 透明度衰减
+    if (this.speed < 3) {
+      this.decay *= 1.15 // 速度变慢时加快消失
+    }
+    this.alpha = Math.max(0, this.alpha - this.decay)
+
+    this.updateColor()
   }
 
   draw() {
     ctx.beginPath()
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-    ctx.fillStyle = this.pink
+    ctx.fillStyle = this.colorStr
     ctx.shadowBlur = 15
-    ctx.shadowColor = this.pink
+    ctx.shadowColor = this.colorStr
     ctx.fill()
     ctx.shadowBlur = 0 // 重置阴影，避免影响其他绘制
   }
@@ -122,37 +254,42 @@ class Particle {
 
 // 创建爆炸粒子
 function createParticles(x, y) {
-  const particleCount = 120 // 增加粒子数量
-  const colors = ['350', '335', '360'] // 不同的粉色色调
-
-  for (let i = 0; i < particleCount; i++) {
+  // 主要绽放效果
+  const mainParticleCount = 80
+  for (let i = 0; i < mainParticleCount; i++) {
     particles.push(new Particle(x, y))
-
-    // 创建次级爆炸效果
-    if (Math.random() < 0.2) {
-      // 20%概率产生次级爆炸
-      setTimeout(() => {
-        const subParticles = 8
-        const radius = Math.random() * 30 + 20
-        for (let j = 0; j < subParticles; j++) {
-          const angle = (j / subParticles) * Math.PI * 2
-          const subX = x + Math.cos(angle) * radius
-          const subY = y + Math.sin(angle) * radius
-          particles.push(new Particle(subX, subY))
-        }
-      }, Math.random() * 300 + 200) // 200-500ms后产生次级爆炸
-    }
   }
+
+  // 创建中心爆炸点的亮点
+  for (let i = 0; i < 10; i++) {
+    const centerParticle = new Particle(x, y)
+    centerParticle.speed = Math.random() * 4 + 2
+    centerParticle.size = Math.random() * 4 + 3
+    centerParticle.decay = Math.random() * 0.02 + 0.02
+    particles.push(centerParticle)
+  }
+
+  // 创建外围散开的小粒子
+  setTimeout(() => {
+    const outerParticleCount = 40
+    for (let i = 0; i < outerParticleCount; i++) {
+      const outerParticle = new Particle(x, y)
+      outerParticle.speed = Math.random() * 10 + 10
+      outerParticle.size = Math.random() * 1.5 + 0.5
+      outerParticle.decay = Math.random() * 0.02 + 0.015
+      particles.push(outerParticle)
+    }
+  }, 50) // 短暂延迟，创造爆炸扩散的效果
 }
 
 // 发射新烟花
 function launchFirework() {
   const startX = Math.random() * canvas.value.width
   const startY = canvas.value.height
-  const targetX = Math.random() * canvas.value.width
-  const targetY = Math.random() * (canvas.value.height * 0.6)
+  // 目标高度在画布上半部分，且有一定的最低高度
+  const targetY = canvas.value.height * (0.15 + Math.random() * 0.3)
 
-  fireworks.push(new Firework(startX, startY, targetX, targetY))
+  fireworks.push(new Firework(startX, startY, startX, targetY))
 }
 
 // 动画循环
