@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp,h } from "vue";
 import "./style.css";
 import App from "./App.vue";
 import ElementPlus from "element-plus";
@@ -10,7 +10,7 @@ import en from './locales/en'
 import zh from './locales/zh'
 import zhTw from './locales/zh-tw'
 import http from './api/http'
-
+import { ElLoading } from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 import { useAppStore } from "./store/app.js";

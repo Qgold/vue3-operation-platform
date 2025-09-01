@@ -6,6 +6,9 @@ import tailwindcss from '@tailwindcss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { visualizer } from 'rollup-plugin-visualizer';
+
+import viteCompression from 'vite-plugin-compression';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -19,6 +22,14 @@ export default defineConfig({
     }),
     Components({
       resolvers: [ElementPlusResolver()],
+    }),
+    visualizer({
+      open: true,
+      filename: 'dist/stats.html',
+    }),
+    viteCompression({
+      algorithm: 'gzip', // 也可以是 'brotliCompress'
+      ext: '.gz',
     }),
   ],
   resolve: {
@@ -42,6 +53,18 @@ export default defineConfig({
         `
       }
     }
-  }
+  },
+  // build:{
+  //   rollupOptions:{
+  //     output:{
+  //       experimentalMinChunkSize:20 * 1024,
+  //       manualChunks(id){
+  //         manualChunks:{
+  //           vendor:['vue','vue-router','axios']
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 })
       

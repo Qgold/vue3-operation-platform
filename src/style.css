@@ -266,6 +266,7 @@ button:focus-visible {
   position: absolute;
   width: 0;
   height: 0;
+
 }
 
 .el-loading-mask {
@@ -274,7 +275,7 @@ button:focus-visible {
 }
 
 .el-loading-mask::after {
-  content: '<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0"><defs><linearGradient id="el-loading-gradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#fff"/><stop offset="100%" style="stop-color:#409EFF"/></linearGradient></defs></svg>';
+  content:'';
   position: absolute;
   width: 0;
   height: 0;
@@ -287,22 +288,24 @@ button:focus-visible {
 
 }
 
-.el-loading-spinner .circular {
+/* .el-loading-spinner .circular {
   height: 46px !important;
   width: 46px !important;
+
+   
 }
 
 .el-loading-spinner .path {
   stroke-width: 6 !important;
   stroke-linecap: square !important;
   animation: loading-dash 1.5s ease-in-out infinite, stroke-color 2s ease-in-out infinite !important;
- 
+  
   stroke-dasharray: 90, 150;
   stroke-dashoffset: 0;
 }
 .el-loading-spinner .el-loading-text {
   color:var(--primary-color) !important;
-}
+} */
 @keyframes loading-dash {
   0% {
     stroke-dasharray: 1, 200;
