@@ -261,12 +261,35 @@ button:focus-visible {
 }
 
 /* 定义渐变SVG */
-.el-loading-mask::before {
+/* .el-loading-mask::before {
   content: '';
   position: absolute;
   width: 0;
   height: 0;
 
+} */
+
+.el-loading-spinner > .circular {
+  display: none !important;
+}
+
+.el-loading-spinner:before {
+  content: '';
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-image: url('./assets/loading.svg');
+  background-size: contain;
+  animation: rotating 2s linear infinite;
+}
+
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .el-loading-mask {
@@ -274,13 +297,13 @@ button:focus-visible {
   background-color: rgba(255, 255, 255, 0.5) !important;
 }
 
-.el-loading-mask::after {
+/* .el-loading-mask::after {
   content:'';
   position: absolute;
   width: 0;
   height: 0;
   overflow: hidden;
-}
+} */
 
 .el-loading-spinner .el-loading-text {
   margin: 3px 0 3px 10px !important;
