@@ -4,7 +4,7 @@ import * as echarts from 'echarts'
 import { Money, User, Document, PieChart } from '@element-plus/icons-vue'
 import Counter from '../components/Counter.vue'
 const timeRange = ref('month')
-import loadingSvg from '../assets/loading.svg'
+
 const lineChartRef = ref(null)
 const pieChartRef = ref(null)
 const loading = ref(true)

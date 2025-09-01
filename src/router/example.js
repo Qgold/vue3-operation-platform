@@ -16,7 +16,7 @@ export const exampleRoutes = [
            {
             path:'/list',
             name:'list',
-            component:()=>import("../views/example/List.vue"),
+            component:()=>import("../views/example/Cockpit.vue"),
             meta: { title: "列表",icon:'yijianfankui' ,isMenu:true},
           },
           {
