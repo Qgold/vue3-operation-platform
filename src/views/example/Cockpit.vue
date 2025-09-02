@@ -348,38 +348,105 @@ const initEarth = () => {
   projectPoints.forEach((project, index) => {
     const radius = baseRadius * 0.8
     const angle = project.angle - Math.PI / 2 // 调整起始角度
-    const pointGeometry = new THREE.SphereGeometry(0.15, 16, 16)
-    const pointMaterial = new THREE.MeshBasicMaterial({
+
+    // 创建标记点组
+    const markerGroup = new THREE.Group()
+
+    // 创建底部圆盘
+    const baseGeometry = new THREE.CylinderGeometry(0.4, 0.4, 0.1, 32)
+    const baseMaterial = new THREE.MeshPhongMaterial({
       color: 0x00f2fe,
       transparent: true,
       opacity: 0.8
     })
-    const point = new THREE.Mesh(pointGeometry, pointMaterial)
+    const base = new THREE.Mesh(baseGeometry, baseMaterial)
+    base.position.y = 0
 
-    // 计算点位置
-    point.position.x = Math.cos(angle) * radius
-    point.position.z = Math.sin(angle) * radius
-    point.position.y = -4.7 // 与圆盘齐平
+    // 创建三角形箭头
+    const arrowShape = new THREE.Shape()
+    arrowShape.moveTo(-0.3, 0)
+    arrowShape.lineTo(0.3, 0)
+    arrowShape.lineTo(0, 0.8)
+    arrowShape.lineTo(-0.3, 0)
 
-    scene.add(point)
-    points.push(point)
+    const extrudeSettings = {
+      depth: 0.1,
+      bevelEnabled: false
+    }
 
-    // 创建连接线
-    const lineGeometry = new THREE.BufferGeometry()
-    const lineMaterial = new THREE.LineBasicMaterial({
+    const arrowGeometry = new THREE.ExtrudeGeometry(arrowShape, extrudeSettings)
+    const arrowMaterial = new THREE.MeshPhongMaterial({
       color: 0x00f2fe,
+      emissive: 0x00f2fe,
+      emissiveIntensity: 0.5,
       transparent: true,
-      opacity: 0.3
+      opacity: 0.9
     })
 
-    const linePoints = []
-    linePoints.push(new THREE.Vector3(0, 0, 0))
-    linePoints.push(point.position)
+    const arrow = new THREE.Mesh(arrowGeometry, arrowMaterial)
+    arrow.position.set(0, 0.2, -0.05)
 
-    lineGeometry.setFromPoints(linePoints)
-    const line = new THREE.Line(lineGeometry, lineMaterial)
-    scene.add(line)
-    lines.push(line)
+    // 创建顶部圆盘（带文字）
+    const topDiscGeometry = new THREE.CylinderGeometry(0.8, 0.8, 0.15, 32)
+    const topDiscMaterial = new THREE.MeshPhongMaterial({
+      color: 0x1779ff,
+      transparent: true,
+      opacity: 0.9
+    })
+    const topDisc = new THREE.Mesh(topDiscGeometry, topDiscMaterial)
+    topDisc.position.y = 1.2
+
+    // 创建发光边缘
+    const edgeGeometry = new THREE.TorusGeometry(0.8, 0.05, 16, 32)
+    const edgeMaterial = new THREE.MeshPhongMaterial({
+      color: 0x00f2fe,
+      emissive: 0x00f2fe,
+      emissiveIntensity: 0.5,
+      transparent: true,
+      opacity: 0.8
+    })
+    const edge = new THREE.Mesh(edgeGeometry, edgeMaterial)
+    edge.rotation.x = Math.PI / 2
+    edge.position.y = 1.2
+
+    // 创建文字标签
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
+    canvas.width = 128
+    canvas.height = 128
+    context.fillStyle = '#00f2fe'
+    context.font = 'bold 64px Arial'
+    context.textAlign = 'center'
+    context.textBaseline = 'middle'
+    context.fillText(project.name, 64, 64)
+
+    const textTexture = new THREE.CanvasTexture(canvas)
+    const textGeometry = new THREE.PlaneGeometry(1.2, 1.2)
+    const textMaterial = new THREE.MeshBasicMaterial({
+      map: textTexture,
+      transparent: true,
+      opacity: 1
+    })
+
+    const text = new THREE.Mesh(textGeometry, textMaterial)
+    text.position.y = 1.2
+    text.position.z = 0.08
+    text.rotation.x = -Math.PI / 2
+
+    // 将所有部件添加到组中
+    markerGroup.add(base)
+    markerGroup.add(arrow)
+    markerGroup.add(topDisc)
+    markerGroup.add(edge)
+    markerGroup.add(text)
+
+    // 设置标记点位置
+    markerGroup.position.x = Math.cos(angle) * radius
+    markerGroup.position.z = Math.sin(angle) * radius
+    markerGroup.position.y = -4.7
+
+    scene.add(markerGroup)
+    points.push(topDisc) // 用顶部圆盘作为交互检测对象
   })
 
   // 添加环境光和点光源
@@ -418,14 +485,18 @@ const animate = () => {
   })
 
   // 项目点位呼吸效果
-  points.forEach((point, index) => {
-    point.scale.setScalar(1 + Math.sin(Date.now() * 0.003 + index) * 0.1)
-  })
+  points.forEach((disc, index) => {
+    // 获取标记点组的所有子元素
+    const group = disc.parent
+    const arrow = group.children[1]
+    const edge = group.children[3]
 
-  // 连接线动画
-  lines.forEach((line, index) => {
-    const material = line.material
-    material.opacity = 0.3 + Math.sin(Date.now() * 0.002 + index) * 0.2
+    // 箭头上下浮动动画
+    arrow.position.y = 0.2 + Math.sin(Date.now() * 0.003 + index) * 0.1
+
+    // 边缘发光动画
+    edge.material.emissiveIntensity =
+      0.5 + Math.sin(Date.now() * 0.002 + index) * 0.3
   })
 
   controls.update()
@@ -630,11 +701,14 @@ onUnmounted(() => {
 
 .metric-card {
   background: rgba(15, 34, 89, 0.5);
-  border: 1px solid #1d377d;
+  border: 1px solid rgba(23, 121, 255, 0.3);
   border-radius: 4px;
   padding: 15px;
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 242, 254, 0.05),
+    0 0 15px rgba(0, 242, 254, 0.1);
+  animation: borderGlow 3s ease-in-out infinite;
 }
 
 .metric-card::before {
@@ -645,6 +719,23 @@ onUnmounted(() => {
   right: 0;
   height: 2px;
   background: linear-gradient(90deg, #007aff, #00f2fe);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+}
+
+.metric-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 4px;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(0, 242, 254, 0.1) 0%,
+    rgba(0, 242, 254, 0) 60%
+  );
+  pointer-events: none;
 }
 
 .metric-title {
@@ -675,9 +766,44 @@ onUnmounted(() => {
 .left-panel,
 .right-panel {
   background: rgba(15, 34, 89, 0.5);
-  border: 1px solid #1d377d;
+  border: 1px solid rgba(23, 121, 255, 0.3);
   border-radius: 4px;
   padding: 20px;
+  position: relative;
+  box-shadow: inset 0 0 30px rgba(0, 242, 254, 0.05),
+    0 0 20px rgba(0, 242, 254, 0.1);
+  animation: panelGlow 4s ease-in-out infinite;
+}
+
+.left-panel::before,
+.right-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  border-radius: 4px;
+  pointer-events: none;
+  animation: borderPulse 4s ease-in-out infinite;
+}
+
+.left-panel::after,
+.right-panel::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 122, 255, 0.5),
+    rgba(0, 242, 254, 0.8),
+    rgba(0, 122, 255, 0.5)
+  );
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
 }
 
 .panel-title {
@@ -835,9 +961,36 @@ onUnmounted(() => {
 
 .chart-container {
   background: rgba(15, 34, 89, 0.5);
-  border: 1px solid #1d377d;
+  border: 1px solid rgba(23, 121, 255, 0.3);
   border-radius: 4px;
   padding: 20px;
+  position: relative;
+  box-shadow: inset 0 0 30px rgba(0, 242, 254, 0.05),
+    0 0 20px rgba(0, 242, 254, 0.1);
+  animation: chartGlow 5s ease-in-out infinite;
+}
+
+.chart-container::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 242, 254, 0.5),
+    rgba(23, 121, 255, 0.3),
+    rgba(0, 242, 254, 0.1),
+    rgba(23, 121, 255, 0.3)
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  animation: borderRotate 10s linear infinite;
 }
 
 .chart-title {
@@ -850,5 +1003,66 @@ onUnmounted(() => {
 
 .chart-content {
   height: calc(100% - 40px);
+}
+
+@keyframes borderGlow {
+  0%,
+  100% {
+    border-color: rgba(23, 121, 255, 0.3);
+    box-shadow: inset 0 0 20px rgba(0, 242, 254, 0.05),
+      0 0 15px rgba(0, 242, 254, 0.1);
+  }
+  50% {
+    border-color: rgba(0, 242, 254, 0.5);
+    box-shadow: inset 0 0 30px rgba(0, 242, 254, 0.1),
+      0 0 20px rgba(0, 242, 254, 0.2);
+  }
+}
+
+@keyframes panelGlow {
+  0%,
+  100% {
+    border-color: rgba(23, 121, 255, 0.3);
+    box-shadow: inset 0 0 30px rgba(0, 242, 254, 0.05),
+      0 0 20px rgba(0, 242, 254, 0.1);
+  }
+  50% {
+    border-color: rgba(0, 242, 254, 0.5);
+    box-shadow: inset 0 0 40px rgba(0, 242, 254, 0.1),
+      0 0 25px rgba(0, 242, 254, 0.2);
+  }
+}
+
+@keyframes borderPulse {
+  0%,
+  100% {
+    border-color: rgba(0, 242, 254, 0.3);
+    opacity: 1;
+  }
+  50% {
+    border-color: rgba(0, 242, 254, 0.1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes chartGlow {
+  0%,
+  100% {
+    box-shadow: inset 0 0 30px rgba(0, 242, 254, 0.05),
+      0 0 20px rgba(0, 242, 254, 0.1);
+  }
+  50% {
+    box-shadow: inset 0 0 40px rgba(0, 242, 254, 0.1),
+      0 0 30px rgba(0, 242, 254, 0.2);
+  }
+}
+
+@keyframes borderRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
