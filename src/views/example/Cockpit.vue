@@ -127,48 +127,188 @@ import { FullScreen, Close } from '@element-plus/icons-vue'
 import screenfull from 'screenfull'
 
 // 初始化地球
-let scene, camera, renderer, controls, earth
+let scene,
+  camera,
+  renderer,
+  controls,
+  earth,
+  rings = [],
+  points = [],
+  lines = []
 const initEarth = () => {
   scene = new THREE.Scene()
+
+  // 设置相机
   camera = new THREE.PerspectiveCamera(
-    75,
+    45,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
   )
+  camera.position.z = 50
 
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-  renderer.setSize(600, 600)
-  document
-    .querySelector('.earth-visualization')
-    .appendChild(renderer.domElement)
+  // 设置渲染器
+  renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true,
+    logarithmicDepthBuffer: true
+  })
+
+  // 获取容器元素
+  const container = document.querySelector('.earth-visualization')
+  container.appendChild(renderer.domElement)
+
+  // 设置渲染器尺寸为容器尺寸
+  const updateSize = () => {
+    const width = container.clientWidth
+    const height = container.clientHeight
+
+    // 更新相机宽高比
+    camera.aspect = width / height
+    camera.updateProjectionMatrix()
+
+    // 更新渲染器尺寸
+    renderer.setSize(width, height)
+    renderer.setPixelRatio(window.devicePixelRatio)
+  }
+
+  // 初始化尺寸
+  updateSize()
+
+  // 监听窗口大小变化
+  window.addEventListener('resize', updateSize)
 
   // 创建地球
-  const geometry = new THREE.SphereGeometry(5, 32, 32)
+  const earthGeometry = new THREE.SphereGeometry(18, 64, 64)
   const textureLoader = new THREE.TextureLoader()
+
+  // 加载地球纹理
   const texture = textureLoader.load('/src/assets/earth-map.jpg')
-  const material = new THREE.MeshPhongMaterial({
+  const earthMaterial = new THREE.MeshPhongMaterial({
     map: texture,
-    specular: new THREE.Color('grey'),
-    shininess: 10
+    bumpScale: 0.05,
+    specular: new THREE.Color(0x4444aa),
+    shininess: 15
   })
-  earth = new THREE.Mesh(geometry, material)
+  earth = new THREE.Mesh(earthGeometry, earthMaterial)
   scene.add(earth)
 
-  // 添加环境光和平行光
+  // 添加大气层效果
+  const atmosphereGeometry = new THREE.SphereGeometry(18.4, 64, 64)
+  const atmosphereMaterial = new THREE.ShaderMaterial({
+    transparent: true,
+    side: THREE.BackSide,
+    uniforms: {
+      intensity: { value: 0 }
+    },
+    vertexShader: `
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+      void main() {
+        vNormal = normalize(normalMatrix * normal);
+        vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+      uniform float intensity;
+      void main() {
+        float rim = 1.0 - abs(dot(normalize(vPosition), vNormal));
+        gl_FragColor = vec4(0.3, 0.6, 1.0, pow(rim, 2.5) * intensity);
+      }
+    `
+  })
+  const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial)
+  scene.add(atmosphere)
+
+  // 创建环形平台
+  const platformCount = 3
+  const platformRadiusStart = 22
+  const platformGap = 3
+
+  for (let i = 0; i < platformCount; i++) {
+    const radius = platformRadiusStart + i * platformGap
+    const ringGeometry = new THREE.RingGeometry(radius, radius + 0.3, 128)
+    const ringMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00f2fe,
+      transparent: true,
+      opacity: 0.3,
+      side: THREE.DoubleSide
+    })
+    const ring = new THREE.Mesh(ringGeometry, ringMaterial)
+    ring.rotation.x = Math.PI / 2
+    scene.add(ring)
+    rings.push(ring)
+  }
+
+  // 创建项目点位
+  const projectPoints = [
+    { name: 'P1', angle: 0 },
+    { name: 'P2', angle: Math.PI * 0.25 },
+    { name: 'P3', angle: Math.PI * 0.5 },
+    { name: 'P4', angle: Math.PI * 0.75 },
+    { name: 'P5', angle: Math.PI },
+    { name: 'P6', angle: Math.PI * 1.25 },
+    { name: 'P7', angle: Math.PI * 1.5 }
+  ]
+
+  projectPoints.forEach((project, index) => {
+    const radius = platformRadiusStart + (index % 3) * platformGap
+    const pointGeometry = new THREE.SphereGeometry(0.15, 16, 16)
+    const pointMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00f2fe,
+      transparent: true,
+      opacity: 0.8
+    })
+    const point = new THREE.Mesh(pointGeometry, pointMaterial)
+
+    // 计算点位置
+    point.position.x = Math.cos(project.angle) * radius
+    point.position.z = Math.sin(project.angle) * radius
+    point.position.y = -0.5 - (index % 3) * 0.5
+
+    scene.add(point)
+    points.push(point)
+
+    // 创建连接线
+    const lineGeometry = new THREE.BufferGeometry()
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x00f2fe,
+      transparent: true,
+      opacity: 0.3
+    })
+
+    const linePoints = []
+    linePoints.push(new THREE.Vector3(0, 0, 0))
+    linePoints.push(point.position)
+
+    lineGeometry.setFromPoints(linePoints)
+    const line = new THREE.Line(lineGeometry, lineMaterial)
+    scene.add(line)
+    lines.push(line)
+  })
+
+  // 添加环境光和点光源
   const ambientLight = new THREE.AmbientLight(0x333333)
   scene.add(ambientLight)
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+
+  const pointLight = new THREE.PointLight(0x00f2fe, 1, 100)
+  pointLight.position.set(10, 10, 10)
+  scene.add(pointLight)
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
   directionalLight.position.set(5, 3, 5)
   scene.add(directionalLight)
-
-  camera.position.z = 15
 
   // 添加控制器
   controls = new OrbitControls(camera, renderer.domElement)
   controls.enableDamping = true
   controls.dampingFactor = 0.05
   controls.rotateSpeed = 0.5
+  controls.minDistance = 45
+  controls.maxDistance = 80
 
   animate()
 }
@@ -176,7 +316,26 @@ const initEarth = () => {
 // 动画循环
 const animate = () => {
   requestAnimationFrame(animate)
+
+  // 地球自转
   earth.rotation.y += 0.001
+
+  // 环形平台旋转
+  rings.forEach((ring, index) => {
+    ring.rotation.y += 0.002 * (index + 1)
+  })
+
+  // 项目点位呼吸效果
+  points.forEach((point, index) => {
+    point.scale.setScalar(1 + Math.sin(Date.now() * 0.003 + index) * 0.1)
+  })
+
+  // 连接线动画
+  lines.forEach((line, index) => {
+    const material = line.material
+    material.opacity = 0.3 + Math.sin(Date.now() * 0.002 + index) * 0.2
+  })
+
   controls.update()
   renderer.render(scene, camera)
 }
@@ -270,6 +429,8 @@ onUnmounted(() => {
   if (screenfull.isEnabled) {
     screenfull.off('change', handleFullscreenChange)
   }
+  // 移除窗口大小变化监听
+  window.removeEventListener('resize', updateSize)
 })
 </script>
 
@@ -408,6 +569,12 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.earth-visualization {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
 }
 
 .todo-list {
