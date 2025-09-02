@@ -190,7 +190,9 @@ const initEarth = () => {
     0.1,
     1000
   )
-  camera.position.z = 50
+  camera.position.z = 70
+  camera.position.y = -10
+  camera.position.x = 0
 
   // 设置渲染器
   renderer = new THREE.WebGLRenderer({
@@ -224,7 +226,7 @@ const initEarth = () => {
   window.addEventListener('resize', updateSize)
 
   // 创建地球
-  const earthGeometry = new THREE.SphereGeometry(18, 64, 64)
+  const earthGeometry = new THREE.SphereGeometry(10, 64, 64)
   const textureLoader = new THREE.TextureLoader()
 
   // 加载地球纹理
@@ -236,10 +238,11 @@ const initEarth = () => {
     shininess: 15
   })
   earth = new THREE.Mesh(earthGeometry, earthMaterial)
+  earth.position.y = 5
   scene.add(earth)
 
   // 添加大气层效果
-  const atmosphereGeometry = new THREE.SphereGeometry(18.4, 64, 64)
+  const atmosphereGeometry = new THREE.SphereGeometry(10.4, 64, 64)
   const atmosphereMaterial = new THREE.ShaderMaterial({
     transparent: true,
     side: THREE.BackSide,
@@ -266,12 +269,13 @@ const initEarth = () => {
     `
   })
   const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial)
+  atmosphere.position.y = 5
   scene.add(atmosphere)
 
   // 创建环形平台
   const platformCount = 3
-  const platformRadiusStart = 22
-  const platformGap = 3
+  const platformRadiusStart = 13
+  const platformGap = 2
 
   for (let i = 0; i < platformCount; i++) {
     const radius = platformRadiusStart + i * platformGap
@@ -284,12 +288,13 @@ const initEarth = () => {
     })
     const ring = new THREE.Mesh(ringGeometry, ringMaterial)
     ring.rotation.x = Math.PI / 2
+    ring.position.y = 5
     scene.add(ring)
     rings.push(ring)
   }
 
   // 创建底部圆盘
-  const baseRadius = 25
+  const baseRadius = 20
   const discGeometry = new THREE.CylinderGeometry(
     baseRadius,
     baseRadius,
@@ -303,7 +308,8 @@ const initEarth = () => {
     side: THREE.DoubleSide
   })
   const disc = new THREE.Mesh(discGeometry, discMaterial)
-  disc.position.y = -5
+  disc.position.y = -8
+  disc.position.x = 0
   scene.add(disc)
 
   // 创建发光边缘
@@ -316,8 +322,46 @@ const initEarth = () => {
   })
   const edge = new THREE.Mesh(edgeGeometry, edgeMaterial)
   edge.rotation.x = Math.PI / 2
-  edge.position.y = -4.7
+  edge.position.y = -7.7
+  edge.position.x = 0
   scene.add(edge)
+
+  // 创建底部小圆盘
+  const smallDiscRadius = baseRadius * 0.7
+  const smallDiscGeometry = new THREE.CylinderGeometry(
+    smallDiscRadius,
+    smallDiscRadius,
+    0.5,
+    64
+  )
+  const smallDiscMaterial = new THREE.MeshPhongMaterial({
+    color: 0x1779ff,
+    transparent: true,
+    opacity: 0.15,
+    side: THREE.DoubleSide
+  })
+  const smallDisc = new THREE.Mesh(smallDiscGeometry, smallDiscMaterial)
+  smallDisc.position.y = -18
+  smallDisc.position.x = 0
+  scene.add(smallDisc)
+
+  // 创建小圆盘发光边缘
+  const smallEdgeGeometry = new THREE.RingGeometry(
+    smallDiscRadius,
+    smallDiscRadius + 0.3,
+    64
+  )
+  const smallEdgeMaterial = new THREE.MeshBasicMaterial({
+    color: 0x00f2fe,
+    transparent: true,
+    opacity: 0.6,
+    side: THREE.DoubleSide
+  })
+  const smallEdge = new THREE.Mesh(smallEdgeGeometry, smallEdgeMaterial)
+  smallEdge.rotation.x = Math.PI / 2
+  smallEdge.position.y = -17.7
+  smallEdge.position.x = 0
+  scene.add(smallEdge)
 
   // 创建项目点位
   const projectPoints = projectData.map((project, index) => {
@@ -439,7 +483,7 @@ const initEarth = () => {
     canvas.width = 128
     canvas.height = 128
     context.fillStyle = '#00f2fe'
-    context.font = 'bold 64px Arial'
+    context.font = 'bold 72px Arial'
     context.textAlign = 'center'
     context.textBaseline = 'middle'
     context.fillText(project.name, 64, 64)
@@ -467,7 +511,7 @@ const initEarth = () => {
     // 设置标记点位置
     markerGroup.position.x = Math.cos(angle) * radius
     markerGroup.position.z = Math.sin(angle) * radius
-    markerGroup.position.y = -4.7
+    markerGroup.position.y = -7.7
 
     scene.add(markerGroup)
     points.push(topDisc) // 用顶部圆盘作为交互检测对象
@@ -490,8 +534,10 @@ const initEarth = () => {
   controls.enableDamping = true
   controls.dampingFactor = 0.05
   controls.rotateSpeed = 0.5
-  controls.minDistance = 45
-  controls.maxDistance = 80
+  controls.minDistance = 50
+  controls.maxDistance = 90
+  controls.maxPolarAngle = Math.PI * 0.55 // 限制相机下视角度
+  controls.minPolarAngle = Math.PI * 0.25 // 限制相机上视角度
 
   animate()
 }
@@ -595,7 +641,7 @@ const tooltipStyle = reactive({
 
 const projectData = [
   {
-    name: 'P1',
+    name: 'A',
     title: '智能 BOM 平台建设项目',
     description:
       '建设智能BOM管理平台，实现产品数据的全生命周期管理，提升研发效率。',
@@ -603,42 +649,42 @@ const projectData = [
     eta: '2025-10'
   },
   {
-    name: 'P2',
+    name: 'B',
     title: '产品存一体化实施',
     description: '打通产品设计与库存管理系统，实现从设计到库存的无缝衔接。',
     progress: 65,
     eta: '2025-12'
   },
   {
-    name: 'P3',
+    name: 'C',
     title: 'ERP+CRM+WMS全球系统',
     description: '构建全球化的企业资源计划系统，提升企业运营效率。',
     progress: 45,
     eta: '2026-03'
   },
   {
-    name: 'P4',
+    name: 'D',
     title: '海外一体化运营平台',
     description: '搭建海外业务统一运营平台，实现全球业务协同。',
     progress: 30,
     eta: '2026-06'
   },
   {
-    name: 'P5',
+    name: 'E',
     title: 'ERP专项升级项目',
     description: '对现有ERP系统进行升级改造，增加智能化功能模块。',
     progress: 70,
     eta: '2025-11'
   },
   {
-    name: 'P6',
+    name: 'F',
     title: '产品/物料开发效能',
     description: '提升产品与物料开发效率，缩短研发周期。',
     progress: 55,
     eta: '2026-01'
   },
   {
-    name: 'P7',
+    name: 'G',
     title: '人力资源运营模式转型',
     description: '优化人力资源管理流程，建设数字化人才管理平台。',
     progress: 90,
