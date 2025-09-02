@@ -16,30 +16,54 @@
     <!-- 顶部指标卡片 -->
     <div class="top-cards">
       <div class="metric-card">
-        <div class="metric-title">当前人数</div>
-        <div class="metric-value">1234</div>
+        <div class="metric-left" />
+        <div class="metric-right">
+          <div class="metric-title">当前人数</div>
+          <div class="metric-value">1234</div>
+        </div>
+
       </div>
       <div class="metric-card">
-        <div class="metric-title">今年项目数</div>
-        <div class="metric-value">11</div>
+        <div class="metric-left" />
+
+        <div class="metric-right">
+          <div class="metric-title">今年项目数</div>
+          <div class="metric-value">11</div>
+        </div>
+
       </div>
       <div class="metric-card">
-        <div class="metric-title">合同签订数</div>
-        <div class="metric-value">1234</div>
+        <div class="metric-left" />
+        <div class="metric-right">
+          <div class="metric-title">合同签订数</div>
+          <div class="metric-value">1234</div>
+        </div>
+
       </div>
       <div class="metric-card">
-        <div class="metric-title">政府政策激励</div>
-        <div class="metric-value">1234</div>
+        <div class="metric-left" />
+        <div class="metric-right">
+          <div class="metric-title">政府政策激励</div>
+          <div class="metric-value">1234</div>
+        </div>
+
       </div>
       <div class="metric-card">
-        <div class="metric-title">数字化转型项目完成进度</div>
-        <div class="metric-value">100%</div>
+        <div class="metric-left" />
+        <div class="metric-right">
+          <div class="metric-title">数字化转型项目完成进度</div>
+          <div class="metric-value">100%</div>
+        </div>
+
       </div>
       <div class="metric-card double">
-        <div class="metric-title">L3-L5级别已实布局化</div>
-        <div class="metric-value">1234</div>
-        <div class="metric-title">L3流程数字化</div>
-        <div class="metric-value">1234</div>
+        <div class="metric-left" />
+        <div class="metric-right">
+
+          <div class="metric-title">L3流程数字化</div>
+          <div class="metric-value">1234</div>
+        </div>
+
       </div>
     </div>
 
@@ -709,6 +733,9 @@ onUnmounted(() => {
   box-shadow: inset 0 0 20px rgba(0, 242, 254, 0.05),
     0 0 15px rgba(0, 242, 254, 0.1);
   animation: borderGlow 3s ease-in-out infinite;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .metric-card::before {
@@ -737,7 +764,20 @@ onUnmounted(() => {
   );
   pointer-events: none;
 }
+.metric-left {
+  width: 100px;
+  height: 100px;
 
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.05),
+    0 0 20px rgba(255, 255, 255, 0.1);
+}
+.metric-right {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
 .metric-title {
   font-size: 14px;
   color: #7a8de6;
@@ -961,13 +1001,12 @@ onUnmounted(() => {
 
 .chart-container {
   background: rgba(15, 34, 89, 0.5);
-  border: 1px solid rgba(23, 121, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.05),
+    0 0 20px rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   padding: 20px;
   position: relative;
-  box-shadow: inset 0 0 30px rgba(0, 242, 254, 0.05),
-    0 0 20px rgba(0, 242, 254, 0.1);
-  animation: chartGlow 5s ease-in-out infinite;
 }
 
 .chart-container::before {
@@ -978,19 +1017,24 @@ onUnmounted(() => {
   right: -1px;
   bottom: -1px;
   border-radius: 4px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+  pointer-events: none;
+}
+
+.chart-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
   background: linear-gradient(
-    135deg,
-    rgba(0, 242, 254, 0.5),
-    rgba(23, 121, 255, 0.3),
-    rgba(0, 242, 254, 0.1),
-    rgba(23, 121, 255, 0.3)
+    90deg,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.8)
   );
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  animation: borderRotate 10s linear infinite;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 .chart-title {
@@ -1054,15 +1098,6 @@ onUnmounted(() => {
   50% {
     box-shadow: inset 0 0 40px rgba(0, 242, 254, 0.1),
       0 0 30px rgba(0, 242, 254, 0.2);
-  }
-}
-
-@keyframes borderRotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
   }
 }
 </style>
