@@ -73,8 +73,29 @@
         <div class="earth-visualization">
           <!-- 这里将使用Three.js渲染3D地球 -->
         </div>
-        <div class="project-points">
-          <!-- 项目点位将动态生成 -->
+        <!-- 悬浮提示框 -->
+        <div
+          class="project-tooltip"
+          v-show="activeProject"
+          :style="tooltipStyle"
+        >
+          <div class="tooltip-header">
+            <span class="project-id">{{ activeProject?.name }}</span>
+            <span class="project-title">{{ activeProject?.title }}</span>
+          </div>
+          <div class="tooltip-content">
+            {{ activeProject?.description }}
+          </div>
+          <div class="tooltip-footer">
+            <div class="stat">
+              <div class="stat-label">进度</div>
+              <div class="stat-value">{{ activeProject?.progress }}%</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">预计完成</div>
+              <div class="stat-value">{{ activeProject?.eta }}</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -119,7 +140,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, onUnmounted } from 'vue'
+import { onMounted, ref, onUnmounted, reactive } from 'vue'
 import * as THREE from 'three'
 import * as echarts from 'echarts'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -243,19 +264,90 @@ const initEarth = () => {
     rings.push(ring)
   }
 
+  // 创建底部圆盘
+  const baseRadius = 25
+  const discGeometry = new THREE.CylinderGeometry(
+    baseRadius,
+    baseRadius,
+    0.5,
+    64
+  )
+  const discMaterial = new THREE.MeshPhongMaterial({
+    color: 0x1779ff,
+    transparent: true,
+    opacity: 0.2,
+    side: THREE.DoubleSide
+  })
+  const disc = new THREE.Mesh(discGeometry, discMaterial)
+  disc.position.y = -5
+  scene.add(disc)
+
+  // 创建发光边缘
+  const edgeGeometry = new THREE.RingGeometry(baseRadius, baseRadius + 0.3, 64)
+  const edgeMaterial = new THREE.MeshBasicMaterial({
+    color: 0x00f2fe,
+    transparent: true,
+    opacity: 0.8,
+    side: THREE.DoubleSide
+  })
+  const edge = new THREE.Mesh(edgeGeometry, edgeMaterial)
+  edge.rotation.x = Math.PI / 2
+  edge.position.y = -4.7
+  scene.add(edge)
+
   // 创建项目点位
-  const projectPoints = [
-    { name: 'P1', angle: 0 },
-    { name: 'P2', angle: Math.PI * 0.25 },
-    { name: 'P3', angle: Math.PI * 0.5 },
-    { name: 'P4', angle: Math.PI * 0.75 },
-    { name: 'P5', angle: Math.PI },
-    { name: 'P6', angle: Math.PI * 1.25 },
-    { name: 'P7', angle: Math.PI * 1.5 }
-  ]
+  const projectPoints = projectData.map((project, index) => {
+    const angle = (Math.PI * 2 * index) / projectData.length
+    return { ...project, angle }
+  })
+
+  // 创建射线投射器用于鼠标交互
+  const raycaster = new THREE.Raycaster()
+  const mouse = new THREE.Vector2()
+
+  // 添加鼠标移动事件监听
+  container.addEventListener('mousemove', (event) => {
+    const rect = container.getBoundingClientRect()
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+
+    raycaster.setFromCamera(mouse, camera)
+    const intersects = raycaster.intersectObjects(points)
+
+    if (intersects.length > 0) {
+      const point = intersects[0].object
+      const index = points.indexOf(point)
+      const project = projectData[index]
+
+      // 更新提示框位置和内容
+      const vector = new THREE.Vector3()
+      vector.setFromMatrixPosition(point.matrixWorld)
+      vector.project(camera)
+
+      const x = (vector.x * rect.width) / 2 + rect.width / 2
+      const y = -(vector.y * rect.height) / 2 + rect.height / 2
+
+      tooltipStyle.left = `${x + 20}px`
+      tooltipStyle.top = `${y - 20}px`
+      activeProject.value = project
+
+      // 高亮显示当前点位
+      points.forEach((p, i) => {
+        p.material.opacity = i === index ? 1 : 0.6
+        p.scale.setScalar(i === index ? 1.5 : 1)
+      })
+    } else {
+      activeProject.value = null
+      points.forEach((p) => {
+        p.material.opacity = 0.8
+        p.scale.setScalar(1)
+      })
+    }
+  })
 
   projectPoints.forEach((project, index) => {
-    const radius = platformRadiusStart + (index % 3) * platformGap
+    const radius = baseRadius * 0.8
+    const angle = project.angle - Math.PI / 2 // 调整起始角度
     const pointGeometry = new THREE.SphereGeometry(0.15, 16, 16)
     const pointMaterial = new THREE.MeshBasicMaterial({
       color: 0x00f2fe,
@@ -265,9 +357,9 @@ const initEarth = () => {
     const point = new THREE.Mesh(pointGeometry, pointMaterial)
 
     // 计算点位置
-    point.position.x = Math.cos(project.angle) * radius
-    point.position.z = Math.sin(project.angle) * radius
-    point.position.y = -0.5 - (index % 3) * 0.5
+    point.position.x = Math.cos(angle) * radius
+    point.position.z = Math.sin(angle) * radius
+    point.position.y = -4.7 // 与圆盘齐平
 
     scene.add(point)
     points.push(point)
@@ -400,6 +492,64 @@ const initCharts = () => {
 
 const cockpitRef = ref(null)
 const isFullscreen = ref(false)
+const activeProject = ref(null)
+const tooltipStyle = reactive({
+  left: '0px',
+  top: '0px'
+})
+
+const projectData = [
+  {
+    name: 'P1',
+    title: '智能 BOM 平台建设项目',
+    description:
+      '建设智能BOM管理平台，实现产品数据的全生命周期管理，提升研发效率。',
+    progress: 85,
+    eta: '2025-10'
+  },
+  {
+    name: 'P2',
+    title: '产品存一体化实施',
+    description: '打通产品设计与库存管理系统，实现从设计到库存的无缝衔接。',
+    progress: 65,
+    eta: '2025-12'
+  },
+  {
+    name: 'P3',
+    title: 'ERP+CRM+WMS全球系统',
+    description: '构建全球化的企业资源计划系统，提升企业运营效率。',
+    progress: 45,
+    eta: '2026-03'
+  },
+  {
+    name: 'P4',
+    title: '海外一体化运营平台',
+    description: '搭建海外业务统一运营平台，实现全球业务协同。',
+    progress: 30,
+    eta: '2026-06'
+  },
+  {
+    name: 'P5',
+    title: 'ERP专项升级项目',
+    description: '对现有ERP系统进行升级改造，增加智能化功能模块。',
+    progress: 70,
+    eta: '2025-11'
+  },
+  {
+    name: 'P6',
+    title: '产品/物料开发效能',
+    description: '提升产品与物料开发效率，缩短研发周期。',
+    progress: 55,
+    eta: '2026-01'
+  },
+  {
+    name: 'P7',
+    title: '人力资源运营模式转型',
+    description: '优化人力资源管理流程，建设数字化人才管理平台。',
+    progress: 90,
+    eta: '2025-09'
+  }
+]
 
 // 切换全屏
 const toggleFullScreen = () => {
@@ -575,6 +725,82 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   min-height: 600px;
+}
+
+.project-tooltip {
+  position: absolute;
+  background: rgba(13, 25, 58, 0.95);
+  border: 1px solid #1779ff;
+  border-radius: 8px;
+  padding: 15px;
+  width: 280px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+  z-index: 1000;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.project-tooltip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #007aff, #00f2fe);
+}
+
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.project-id {
+  background: rgba(0, 242, 254, 0.2);
+  color: #00f2fe;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.project-title {
+  color: #fff;
+  font-size: 16px;
+}
+
+.tooltip-content {
+  color: #7a8de6;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.tooltip-footer {
+  display: flex;
+  gap: 20px;
+}
+
+.tooltip-footer .stat {
+  flex: 1;
+  background: rgba(29, 55, 125, 0.3);
+  padding: 8px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.tooltip-footer .stat-label {
+  font-size: 12px;
+  color: #7a8de6;
+  margin-bottom: 4px;
+}
+
+.tooltip-footer .stat-value {
+  font-size: 16px;
+  color: #00f2fe;
+  font-weight: bold;
 }
 
 .todo-list {
