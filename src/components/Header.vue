@@ -113,8 +113,8 @@ function logout() {
         />
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item :command="false">浅色模式</el-dropdown-item>
-            <el-dropdown-item :command="true">深色模式</el-dropdown-item>
+            <el-dropdown-item command="false">浅色模式</el-dropdown-item>
+            <el-dropdown-item command="true">深色模式</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -137,7 +137,6 @@ function logout() {
       v-model="dialogVisible"
       title="提示"
       width="30%"
-      :before-close="handleClose"
       draggable
       append-to-body
       :close-on-click-modal="false"

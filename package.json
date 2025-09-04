@@ -39,6 +39,7 @@
     "vue-grid-layout": "^3.0.0-beta1",
     "vue-i18n": "^12.0.0-alpha.2",
     "vue-router": "^4.5.0",
+    "xcmg-components": "^1.0.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

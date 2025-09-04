@@ -179,7 +179,8 @@ let scene,
   earth,
   rings = [],
   points = [],
-  lines = []
+  lines = [],
+  updateSize = () => {}
 const initEarth = () => {
   scene = new THREE.Scene()
 
@@ -226,7 +227,7 @@ const initEarth = () => {
   window.addEventListener('resize', updateSize)
 
   // 创建地球
-  const earthGeometry = new THREE.SphereGeometry(10, 64, 64)
+  const earthGeometry = new THREE.SphereGeometry(14, 64, 64)
   const textureLoader = new THREE.TextureLoader()
 
   // 加载地球纹理
@@ -242,12 +243,12 @@ const initEarth = () => {
   scene.add(earth)
 
   // 添加大气层效果
-  const atmosphereGeometry = new THREE.SphereGeometry(10.4, 64, 64)
+  const atmosphereGeometry = new THREE.SphereGeometry(14.4, 64, 64)
   const atmosphereMaterial = new THREE.ShaderMaterial({
     transparent: true,
     side: THREE.BackSide,
     uniforms: {
-      intensity: { value: 0 }
+      intensity: { value: 0.5 }
     },
     vertexShader: `
       varying vec3 vNormal;
@@ -268,6 +269,15 @@ const initEarth = () => {
       }
     `
   })
+
+  //   const bloomPass = new UnrealBloomPass(
+  //   new THREE.Vector2(window.innerWidth, window.innerHeight),
+  //   1.5, 0.4, 0.85
+  // );
+  // bloomPass.threshold = 0;
+  // bloomPass.strength = 1.5;
+  // bloomPass.radius = 0;
+
   const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial)
   atmosphere.position.y = 5
   scene.add(atmosphere)
@@ -294,7 +304,7 @@ const initEarth = () => {
   }
 
   // 创建底部圆盘
-  const baseRadius = 20
+  const baseRadius = 24
   const discGeometry = new THREE.CylinderGeometry(
     baseRadius,
     baseRadius,
@@ -304,7 +314,7 @@ const initEarth = () => {
   const discMaterial = new THREE.MeshPhongMaterial({
     color: 0x1779ff,
     transparent: true,
-    opacity: 0.2,
+    opacity: 0.15,
     side: THREE.DoubleSide
   })
   const disc = new THREE.Mesh(discGeometry, discMaterial)
@@ -315,7 +325,7 @@ const initEarth = () => {
   // 创建发光边缘
   const edgeGeometry = new THREE.RingGeometry(baseRadius, baseRadius + 0.3, 64)
   const edgeMaterial = new THREE.MeshBasicMaterial({
-    color: 0x00f2fe,
+    color: 0x053674,
     transparent: true,
     opacity: 0.8,
     side: THREE.DoubleSide
@@ -327,7 +337,7 @@ const initEarth = () => {
   scene.add(edge)
 
   // 创建底部小圆盘
-  const smallDiscRadius = baseRadius * 0.7
+  const smallDiscRadius = baseRadius * 0.9
   const smallDiscGeometry = new THREE.CylinderGeometry(
     smallDiscRadius,
     smallDiscRadius,
@@ -352,7 +362,7 @@ const initEarth = () => {
     64
   )
   const smallEdgeMaterial = new THREE.MeshBasicMaterial({
-    color: 0x00f2fe,
+    color: 0x053674,
     transparent: true,
     opacity: 0.6,
     side: THREE.DoubleSide
@@ -455,7 +465,7 @@ const initEarth = () => {
     arrow.position.set(0, 0.2, -0.05)
 
     // 创建顶部圆盘（带文字）
-    const topDiscGeometry = new THREE.CylinderGeometry(0.8, 0.8, 0.15, 32)
+    const topDiscGeometry = new THREE.CylinderGeometry(1.2, 1.2, 0.15, 32)
     const topDiscMaterial = new THREE.MeshPhongMaterial({
       color: 0x1779ff,
       transparent: true,
@@ -467,7 +477,7 @@ const initEarth = () => {
     // 创建发光边缘
     const edgeGeometry = new THREE.TorusGeometry(0.8, 0.05, 16, 32)
     const edgeMaterial = new THREE.MeshPhongMaterial({
-      color: 0x00f2fe,
+      color: 0xffffff,
       emissive: 0x00f2fe,
       emissiveIntensity: 0.5,
       transparent: true,
@@ -545,7 +555,9 @@ const initEarth = () => {
 // 动画循环
 const animate = () => {
   requestAnimationFrame(animate)
-
+  rings.forEach((ring, i) => {
+    ring.rotation.z += 0.002 * (i + 1) // 不同速度旋转
+  })
   // 地球自转
   earth.rotation.y += 0.001
 

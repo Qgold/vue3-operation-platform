@@ -599,6 +599,7 @@ const discountActivities = ref([
   }
 ])
 
+const activities = ref([])
 // 秒杀活动数据
 const seckillActivities = ref([
   {

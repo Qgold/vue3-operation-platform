@@ -9,9 +9,9 @@ const isCollapse = ref(false)
 const route = useRoute()
 const router = useRouter()
 
-const handleSelect = (index) => {
-  router.push(index)
-}
+// const handleSelect = (index) => {
+//   router.push(index)
+// }
 
 watch(
   () => app.isCollapse,
@@ -36,11 +36,11 @@ onMounted(() => {
       class="el-menu-vertical"
       mode="vertical"
       :collapse="isCollapse"
-      @select="handleSelect"
+      :router="true"
     >
       <template
         v-for="(item, index) in routes.filter(i=>i?.meta?.isMenu)"
-        :key="index"
+        :key="item.path"
       >
         <!-- 有子路由的菜单项 -->
         <el-sub-menu

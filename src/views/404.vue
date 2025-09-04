@@ -34,7 +34,7 @@ import found from '@/assets/404.png'
 const router = useRouter()
 
 const handleRefresh = () => {
-  window.location.reload()
+  // window.location.reload()
 }
 
 const goHome = () => {
