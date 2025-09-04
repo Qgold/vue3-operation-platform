@@ -12,6 +12,15 @@ import zhTw from './locales/zh-tw'
 import http from './api/http'
 import { ElLoading } from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import { Steps as Tsteps, StepItem as TStepItem, InputNumber as TInputNumber } from 'tdesign-vue-next';
+
+import 'tdesign-vue-next/es/style/index.css';
+
+ 
+
+import XcmgComponents from 'xcmg-components'
+
+import 'xcmg-components/dist/style.css'
 
 import { useAppStore } from "./store/app.js";
 import VueGridLayout from 'vue-grid-layout'
@@ -102,5 +111,8 @@ app.use(ElementPlus,{
 });
 app.use(router);
 app.use(i18n);
-
+app.use(Tsteps);
+app.use(TStepItem);
+app.use(TInputNumber);
+app.use(XcmgComponents)
 app.mount("#app");
