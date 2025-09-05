@@ -644,7 +644,7 @@
             >
               <template #default="{ row }">
                 <el-button
-                  type="primary"
+                  text
                   link
                   @click="downloadFile(row)"
                 >下载</el-button>
@@ -667,7 +667,10 @@
         :rules="contractRules"
         label-width="100px"
       >
-        <el-row :gutter="20">
+        <el-row
+          :gutter="20"
+          style="margin-top:20px;"
+        >
           <el-col :span="12">
             <el-form-item
               label="合同编号"
@@ -706,7 +709,10 @@
           </el-col>
         </el-row>
 
-        <el-row :gutter="20">
+        <el-row
+          :gutter="20"
+          style="margin-top:20px;"
+        >
           <el-col :span="12">
             <el-form-item
               label="供应商"
@@ -741,7 +747,10 @@
           </el-col>
         </el-row>
 
-        <el-row :gutter="20">
+        <el-row
+          :gutter="20"
+          style="margin-top:20px;margin-bottom:20px;"
+        >
           <el-col :span="12">
             <el-form-item
               label="生效日期"
@@ -1371,9 +1380,5 @@ const contractRules = {
 
 .contract-files {
   margin-top: 20px;
-}
-
-.upload-demo {
-  margin-top: 10px;
 }
 </style>
