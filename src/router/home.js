@@ -11,11 +11,7 @@ export const homeRoutes = [
         name: "index",
         component: ()=>import("../views/Index.vue"),
         meta: { title: "主页" ,icon:'ce-zichanicon',keepAlive:true,isMenu:true},
-        
       },
-     
-     
-     
     ],
   }
 ]

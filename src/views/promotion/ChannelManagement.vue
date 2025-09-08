@@ -14,7 +14,8 @@
             <div class="flex justify-between items-center">
               <span>广告活动概览</span>
               <el-button
-                type="primary"
+                link
+                text
                 @click="createAdCampaign"
               >新建广告活动</el-button>
             </div>
@@ -96,7 +97,8 @@
             <div class="flex justify-between items-center">
               <span>社交媒体账号</span>
               <el-button
-                type="primary"
+                link
+                text
                 @click="connectSocialAccount"
               >添加账号</el-button>
             </div>
@@ -132,7 +134,7 @@
               <template #default="{ row }">
                 <el-button
                   link
-                  type="primary"
+                  text
                   @click="viewSocialAnalytics(row)"
                 >查看分析</el-button>
               </template>

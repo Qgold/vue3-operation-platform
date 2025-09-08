@@ -16,8 +16,6 @@ import { Steps as Tsteps, StepItem as TStepItem, InputNumber as TInputNumber } f
 
 import 'tdesign-vue-next/es/style/index.css';
 
- 
-
 import XcmgComponents from 'xcmg-components'
 
 import 'xcmg-components/dist/style.css'

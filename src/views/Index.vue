@@ -4,7 +4,7 @@ import * as echarts from 'echarts'
 import { Money, User, Document, PieChart } from '@element-plus/icons-vue'
 import Counter from '../components/Counter.vue'
 const timeRange = ref('month')
-
+import { ElMessage } from 'element-plus'
 const lineChartRef = ref(null)
 const pieChartRef = ref(null)
 const loading = ref(true)
@@ -38,34 +38,34 @@ const todoList = ref([
 
 // 询价结果数据
 const priceList = ref([
-  {
-    date: '2025-06-18',
-    name: '办公设备采购项目',
-    supplier: '科技有限公司',
-    price: '￥128,000',
-    status: '已成交'
-  },
-  {
-    date: '2025-06-17',
-    name: '软件开发服务',
-    supplier: '信息技术有限公司',
-    price: '￥256,000',
-    status: '已成交'
-  },
-  {
-    date: '2025-06-16',
-    name: '数据中心建设项目',
-    supplier: '网络科技有限公司',
-    price: '￥980,000',
-    status: '进行中'
-  },
-  {
-    date: '2025-06-15',
-    name: '安防系统升级',
-    supplier: '安防科技有限公司',
-    price: '￥158,000',
-    status: '已成交'
-  }
+  // {
+  //   date: '2025-06-18',
+  //   name: '办公设备采购项目',
+  //   supplier: '科技有限公司',
+  //   price: '￥128,000',
+  //   status: '已成交'
+  // },
+  // {
+  //   date: '2025-06-17',
+  //   name: '软件开发服务',
+  //   supplier: '信息技术有限公司',
+  //   price: '￥256,000',
+  //   status: '已成交'
+  // },
+  // {
+  //   date: '2025-06-16',
+  //   name: '数据中心建设项目',
+  //   supplier: '网络科技有限公司',
+  //   price: '￥980,000',
+  //   status: '进行中'
+  // },
+  // {
+  //   date: '2025-06-15',
+  //   name: '安防系统升级',
+  //   supplier: '安防科技有限公司',
+  //   price: '￥158,000',
+  //   status: '已成交'
+  // }
 ])
 
 // 初始化图表
@@ -353,6 +353,14 @@ const initPieChart = () => {
             </el-tag>
           </template>
         </el-table-column>
+        <template #empty>
+          <div class="custom-empty">
+            <img
+              src="../assets/table-empty.png"
+              alt="空状态图片"
+            >
+          </div>
+        </template>
       </el-table>
     </el-card>
 
@@ -489,5 +497,17 @@ const initPieChart = () => {
 .todo-list {
   height: 300px;
   overflow-y: auto;
+}
+.custom-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom-empty img {
+  width: 312px;
+  height: 240px;
+  object-fit: contain;
+}
+.top-message {
 }
 </style>
