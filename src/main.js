@@ -13,7 +13,7 @@ import http from './api/http'
 import { ElLoading } from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import { Steps as Tsteps, StepItem as TStepItem, InputNumber as TInputNumber } from 'tdesign-vue-next';
-
+import permissionDirective from './directives/permission'
 import 'tdesign-vue-next/es/style/index.css';
 
 import XcmgComponents from 'xcmg-components'
@@ -113,4 +113,5 @@ app.use(Tsteps);
 app.use(TStepItem);
 app.use(TInputNumber);
 app.use(XcmgComponents)
+app.directive('permission', permissionDirective)
 app.mount("#app");
