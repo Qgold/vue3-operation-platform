@@ -328,10 +328,10 @@ const options = Array.from({ length: 100 }).map((_, idx) => ({
 }
 
 .drawer-handle {
-  width: 20px;
+  width: 16px;
   height: 100px;
-  background-color: var(--primary-color);
-  color: white;
+  background-color: white;
+  color: var(--main-text-color);
   font-size: 18px;
   display: flex;
   align-items: center;
@@ -339,12 +339,13 @@ const options = Array.from({ length: 100 }).map((_, idx) => ({
   cursor: pointer;
   user-select: none;
   transition: background-color 0.3s ease;
-  border-radius: 0 20px 20px 0;
+  border-radius: 0 6px 6px 0;
   margin-top: calc(50vh - 50px);
+  border: 1px solid var(--main-text-color);
 
-  &:hover {
-    background-color: #121212;
-  }
+  // &:hover {
+  //   background-color: #121212;
+  // }
 }
 
 .right {

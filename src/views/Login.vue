@@ -114,11 +114,8 @@
           <a
             href="#"
             class="hover-effect"
-          >《隐私条款》</a>和
-          <a
-            href="#"
-            class="hover-effect"
-          >《服务条款》</a>
+          >《隐私条款》</a>
+
         </el-form-item>
 
         <el-form-item class="form-item-animation">
@@ -133,11 +130,8 @@
             <div class="button-effect"></div>
           </el-button>
         </el-form-item>
-        <el-form-item class="form-item-animation">
-          <div
-            class="flex justify-center"
-            @click="jumpToRegister"
-          >还没有账号？<span style="color:var(--primary-color);">立即注册</span></div>
+        <el-form-item class="form-item-animation ">
+          <div @click="jumpToRegister"> 还没有账号？<span style="color:var(--primary-color);cursor:pointer;">立即注册</span></div>
         </el-form-item>
       </el-form>
 
@@ -209,11 +203,8 @@
           <a
             href="#"
             class="hover-effect"
-          >《隐私条款》</a>和
-          <a
-            href="#"
-            class="hover-effect"
-          >《服务条款》</a>
+          >《隐私条款》</a>
+
         </el-form-item>
 
         <el-form-item class="form-item-animation">
@@ -689,6 +680,9 @@ onMounted(() => {
 
   .el-form-item__content {
     margin-left: 0 !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
   }
 }
 :deep(.el-input-group__prepend) {
