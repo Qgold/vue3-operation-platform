@@ -55,7 +55,7 @@
                   <div class="card-header">
                     <span>区域运费设置</span>
                     <el-button
-                      type="primary"
+                      text
                       link
                       @click="addRegionRule"
                       style="height:30px;width:100px;"
@@ -157,7 +157,7 @@
                   <div class="card-header">
                     <span>满减规则</span>
                     <el-button
-                      type="primary"
+                      text
                       link
                       @click="addDiscountRule"
                     >添加规则</el-button>
@@ -349,7 +349,7 @@
                   <div class="card-header">
                     <span>限购规则</span>
                     <el-button
-                      type="primary"
+                      text
                       link
                       @click="addPurchaseLimit"
                     >添加规则</el-button>

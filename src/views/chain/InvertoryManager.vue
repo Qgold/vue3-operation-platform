@@ -206,7 +206,6 @@
           <el-table-column
             prop="status"
             label="状态"
-            width="100"
           >
             <template #default="{ row }">
               <el-tag :type="getStockStatusTag(row)">{{ row.status }}</el-tag>
@@ -215,7 +214,7 @@
           <el-table-column
             label="操作"
             fixed="right"
-            width="150"
+            width="120"
           >
             <template #default="{ row }">
               <el-button
@@ -319,7 +318,7 @@
           <el-table-column
             prop="productName"
             label="商品名称"
-            width="180"
+            width="150"
           />
           <el-table-column
             prop="manufacturer"
@@ -344,7 +343,6 @@
           <el-table-column
             prop="status"
             label="状态"
-            width="100"
           >
             <template #default="{ row }">
               <el-tag :type="getBatchStatusTag(row)">{{ row.status }}</el-tag>
@@ -353,7 +351,7 @@
           <el-table-column
             label="操作"
             fixed="right"
-            width="150"
+            width="100"
           >
             <template #default="{ row }">
               <el-button

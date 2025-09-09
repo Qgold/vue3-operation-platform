@@ -40,7 +40,7 @@
       </div>
       <div class="action-buttons">
         <el-button
-          type="primary"
+          type="plain"
           @click="handleCreateTicket"
         >
           创建工单
