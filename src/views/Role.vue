@@ -303,7 +303,8 @@ const formatRoutes = (routes) => {
     .map((route) => {
       const node = {
         title: route.meta.title,
-        path: route.path
+        path: route.path,
+        permission: route.meta.permission
       }
 
       if (route.children) {

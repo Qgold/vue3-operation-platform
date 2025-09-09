@@ -176,6 +176,7 @@ const goFeedback = () => {
   left: 0;
   right: 0;
   bottom: 0px;
+  // width: 100vw;
 }
 .main-content::-webkit-scrollbar {
   display: none;
@@ -253,13 +254,14 @@ const goFeedback = () => {
   margin: 56px 16px 0 16px;
   background: var(--main-bg);
   border-radius: 4px;
+  width: calc(100vw - 252px);
   .content-container {
     height: calc(100vh - var(--header-height) - var(--footer-height) - 60px);
     overflow-y: auto;
 
     &::-webkit-scrollbar {
-      width: 8px;
-      background: var(--default-color);
+      width: 0px;
+      // background: var(--default-color);
     }
   }
 
@@ -275,8 +277,6 @@ const goFeedback = () => {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    // padding-right: 20px;
-
     .avatar-stack {
       display: flex;
       align-items: center;
@@ -309,6 +309,7 @@ const goFeedback = () => {
 
   .page-container {
     padding: 24px;
+    width: 100%;
   }
 }
 

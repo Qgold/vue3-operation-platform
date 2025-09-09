@@ -149,8 +149,8 @@
 
         <el-table
           :data="filteredStock"
-          style="width: 100%"
           border
+          stripe
         >
           <el-table-column
             prop="code"
@@ -160,17 +160,17 @@
           <el-table-column
             prop="name"
             label="商品名称"
-            width="180"
+            width="160"
           />
           <el-table-column
             prop="category"
             label="类别"
-            width="120"
+            width="100"
           />
           <el-table-column
             prop="specification"
             label="规格"
-            width="120"
+            width="100"
           />
           <el-table-column
             prop="unit"
@@ -215,6 +215,7 @@
           <el-table-column
             label="操作"
             fixed="right"
+            width="150"
           >
             <template #default="{ row }">
               <el-button
@@ -309,11 +310,7 @@
         label="批次管理"
         name="batch"
       >
-        <el-table
-          :data="batchList"
-          style="width: 100%"
-          border
-        >
+        <el-table :data="batchList">
           <el-table-column
             prop="batchNo"
             label="批次号"
@@ -332,12 +329,12 @@
           <el-table-column
             prop="produceDate"
             label="生产日期"
-            width="120"
+            width="100"
           />
           <el-table-column
             prop="expiryDate"
             label="到期日期"
-            width="120"
+            width="100"
           />
           <el-table-column
             prop="quantity"
@@ -356,6 +353,7 @@
           <el-table-column
             label="操作"
             fixed="right"
+            width="150"
           >
             <template #default="{ row }">
               <el-button
