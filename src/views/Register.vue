@@ -1,15 +1,17 @@
 <script setup>
 import { ElMessage } from 'element-plus'
 import { ref, reactive } from 'vue'
-const isExpanded = ref(true)
+
 import { useAppStore } from '../store/app'
 import { useRouter } from 'vue-router'
 const refreshRight = () => {}
+
 const app = useAppStore()
 const router = useRouter()
 const formSize = ref('default')
 const ruleFormRef = ref()
-const currentTab = ref(0)
+
+const isExpanded = ref(true)
 const ruleForm = reactive({
   userName: '',
   gender: '',
