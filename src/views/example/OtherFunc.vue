@@ -25,14 +25,19 @@ const list = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
 
 /* 子元素 */
 .item {
-  height: 200px;
-  background-color: var(--primary-color);
+  height: 350px;
+  background-color: white;
   border-radius: 4px;
   margin-left: 10px;
   margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 </style>
