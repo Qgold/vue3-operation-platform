@@ -32,6 +32,18 @@ export const exampleRoutes = [
             component:()=>import("../views/example/ComponentGroup.vue"),
             meta: { title: "组件示例",icon:'yijianfankui' ,isMenu:true,keepAlive:true,permission:'example:componetEax' },
           },
+          {
+            path:'/componetOhter',
+            name:'componetOther',
+            component:()=>import("../views/example/OtherFunc.vue"),
+            meta: { title: "自适应卡片",icon:'yijianfankui' ,isMenu:true,keepAlive:true,permission:'example:otherFunc' },
+          },
+           {
+            path:'/componetFlow',
+            name:'componetFlow',
+            component:()=>import("../views/example/Flow.vue"),
+            meta: { title: "流式布局",icon:'yijianfankui' ,isMenu:true,keepAlive:true,permission:'example:flow' },
+          },
           
         ]
       }
