@@ -8,9 +8,14 @@ import avator from '../assets/avator.jpg'
 import { Headset } from '@element-plus/icons-vue'
 const router = useRouter()
 import { useAppStore } from '../store/app.js'
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 const showDrawer = ref(false)
 const app = useAppStore()
+
+const mainRef = ref(null)
+
+// 提供 mainRef 给所有子组件
+provide('mainRef', mainRef)
 const toggle = () => {
   app.setIsCollapse(!app.isCollapse)
 }
@@ -21,7 +26,10 @@ const goFeedback = () => {
 </script>
 
 <template>
-  <div class="layout-container">
+  <div
+    class="layout-container"
+    ref="mainRef"
+  >
     <!-- 头部导航栏 -->
     <Header />
 

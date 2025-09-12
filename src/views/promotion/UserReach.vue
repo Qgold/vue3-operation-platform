@@ -76,10 +76,7 @@
         name="message"
       >
         <div class="action-bar">
-          <el-button
-            type="primary"
-            @click="createMessage"
-          >新建消息</el-button>
+
           <el-select
             v-model="messageType"
             placeholder="消息类型"
@@ -120,6 +117,11 @@
               value="failed"
             />
           </el-select>
+
+          <el-button
+            type="primary"
+            @click="createMessage"
+          >新建消息</el-button>
         </div>
 
         <el-table

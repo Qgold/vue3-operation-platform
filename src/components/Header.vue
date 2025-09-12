@@ -1,11 +1,18 @@
 <script setup>
 import avator from '../assets/avator.jpg'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, inject } from 'vue'
 import { useAppStore } from '../store/app.js'
 import { useRouter } from 'vue-router'
-import { Search, ArrowDown, CaretBottom } from '@element-plus/icons-vue'
+import {
+  Search,
+  ArrowDown,
+  CaretBottom,
+  FullScreen,
+  Close
+} from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
 
+import screenfull from 'screenfull'
 const search = ref(null)
 const dialogVisible = ref(false)
 const app = useAppStore()
@@ -13,8 +20,11 @@ const router = useRouter()
 const { locale } = useI18n()
 const theme = ref(localStorage.getItem('darkMode') == 'true' ? true : false)
 const select = ref('')
-function setTheme(isDark) {
-  theme.value = isDark
+const isFullscreen = ref(false)
+
+// 注入 mainRef
+const mainRef = inject('mainRef')
+function setTheme() {
   window.toggleDarkMode()
 }
 
@@ -25,11 +35,29 @@ function changeLanguage(lang) {
 function goHome() {
   router.push('/')
 }
+// 切换全屏
+const toggleFullScreen = () => {
+  if (screenfull.isEnabled) {
+    screenfull.toggle(mainRef.value)
+    isFullscreen.value = !isFullscreen.value
+  }
+}
 
+// 监听全屏变化
+const handleFullscreenChange = () => {
+  isFullscreen.value = screenfull.isFullscreen
+}
 function logout() {
   app.removeUserInfo()
   router.push('/login')
 }
+
+onMounted(() => {
+  // 添加全屏变化监听
+  if (screenfull.isEnabled) {
+    screenfull.on('change', handleFullscreenChange)
+  }
+})
 </script>
 <template>
   <div class="flex flex-row bg-black fixed border-[1px] border-[var(--line-color)] border-solid">
@@ -100,25 +128,37 @@ function logout() {
         </template>
       </el-dropdown>
 
+      <img
+        src="../assets/theme.png"
+        alt="主题"
+        style="width: 24px; height: 24px; margin-right: 10px;cursor: pointer;"
+        @click="setTheme"
+      />
       <!-- 主题切换 -->
-      <el-dropdown
+      <!-- <el-dropdown
         trigger="hover"
         @command="setTheme"
         class="header-item"
       >
-        <img
-          src="../assets/theme.png"
-          alt="主题"
-          style="width: 24px; height: 24px; margin-right: 10px;cursor: pointer;"
-        />
+
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item command="false">浅色模式</el-dropdown-item>
             <el-dropdown-item command="true">深色模式</el-dropdown-item>
           </el-dropdown-menu>
         </template>
-      </el-dropdown>
+      </el-dropdown> -->
 
+      <div
+        style='margin-top:5px; cursor: pointer;'
+        @click="toggleFullScreen"
+        title="全屏切换"
+      >
+        <el-icon :size="20">
+          <FullScreen v-if="!isFullscreen" />
+          <Close v-else />
+        </el-icon>
+      </div>
       <!-- 用户信息 -->
       <div
         class="header-item user-info"
@@ -196,15 +236,15 @@ function logout() {
 }
 
 .el-input {
-  --el-input-border: 1px solid white !important;
+  // --el-input-border: 1px solid white !important;
   --el-input-border-color: white !important;
-  --el-input-bg-color: #ffffff30 !important;
+  // --el-input-bg-color: #ffffff30 !important;
 }
 .el-input-group__append,
 .el-input-group__prepend {
-  // --el-select-input-color: red !important;
-  background-color: #ffffff30 !important;
+  // background-color: #ffffff30 !important;
 }
+
 .header-item {
   height: var(--header-height);
   display: flex;

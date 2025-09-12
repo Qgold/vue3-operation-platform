@@ -40,7 +40,8 @@ onMounted(() => {
     >
       <template
         v-for="(item, index) in routes.filter(i=>i?.meta?.isMenu)"
-        :key="item.path"
+        :index="item.path"
+        :key="index"
       >
         <!-- 有子路由的菜单项 -->
         <el-sub-menu

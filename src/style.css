@@ -530,6 +530,7 @@ button:focus-visible {
   --el-input-border-radius:var(--input-radius) !important; 
   --el-input-text-color:var(--main-text-color) !important;
   --el-input-placeholder-color:var(--default-color) !important;
+  --el-input-bg-color:#ffffff30 !important;
 }
 .el-input-number {
   border-color:var(--primary-color) !important;
@@ -626,11 +627,16 @@ button:focus-visible {
   color: var(--hover-text-color) !important
 }
 
+
+.el-input-group__prepend div.el-select .el-select__wrapper {
+ 
+  background-color: #ffffff30 !important;
+}
 /* -----------------------------------el-date---------------------------------- */
 
 .el-date-editor.el-input__wrapper {
    --el-input-border-radius:var(--input-radius) !important; 
-  box-shadow: 0 0 0 1px var(--default-color, var(--default-color)) inset !important;
+  /* box-shadow: 0 0 0 1px var(--default-color, var(--default-color)) inset !important; */
 }
 
 .el-date-table td.today .el-date-table-cell__text {
@@ -648,7 +654,7 @@ button:focus-visible {
 }
 
 .el-date-editor.el-input__wrapper:hover {
-    box-shadow: 0 0 0 1px var(--hover-color, var(--hover-color)) inset !important;
+    /* box-shadow: 0 0 0 1px var(--hover-color, var(--hover-color)) inset !important; */
 }
 .el-date-editor.is-active,.el-date-editor.is-active:hover {
     box-shadow: 0 0 0 1px var(--primary-color, var(--primary-color)) inset !important;
@@ -660,7 +666,11 @@ button:focus-visible {
 .el-date-editor--daterange {
   --el-date-editor-width: var(--input-small-width) !important;
 }
+.el-input__wrapper {
 
+  box-shadow: none !important;
+
+}
 
 /* -----------------------------------el-radio---------------------------------- */
 .el-radio {
@@ -853,4 +863,9 @@ button:focus-visible {
   --el-slider-height:4px !important;
   --el-slider-border-radius:4px !important;
   --el-slider-button-size:16px !important;
+}
+
+.el-descriptions__label.el-descriptions__cell.is-bordered-label {
+  background: var(--line-color) !important;
+  color:var(--secondary-text-color) !important;
 }

@@ -175,7 +175,7 @@ const componentList = [
         { date: '2024-02', value: 200 },
         { date: '2024-03', value: 300 }
       ],
-      xAxisData: " ['周一', '周二', '周三', '周四', '周五', '周六', '周日']",
+      xAxisData: "['周一', '周二', '周三', '周四', '周五', '周六', '周日']",
       series: [
         {
           name: '库存不足',

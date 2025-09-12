@@ -57,8 +57,34 @@
       <el-table-column
         prop="createTime"
         label="创建时间"
+        sortable
         width="180"
-      />
+        :filters="[
+        { text: '2016-05-01', value: '2016-05-01' },
+        { text: '2016-05-02', value: '2016-05-02' },
+        { text: '2016-05-03', value: '2016-05-03' },
+        { text: '2016-05-04', value: '2016-05-04' },
+      ]"
+        :filter-method="(value, row) => row.createTime.startsWith(value)"
+      >
+
+        <!-- <template #header="{ column }">
+          <div class="custom-filter-header">
+            <span>创建时间</span>
+          
+            <el-icon @click="toggleFilter(column)">
+              <Filter /> 
+           
+            </el-icon>
+          </div>
+        </template>
+
+
+        <template #default="{ row }">
+          {{ row.createTime }}
+        </template> -->
+      </el-table-column>
+
       <el-table-column
         prop="password"
         label="密码"
@@ -183,7 +209,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Search, Plus } from '@element-plus/icons-vue'
+import { Search, Plus, Filter } from '@element-plus/icons-vue'
 
 // 搜索相关
 const searchQuery = ref('')
@@ -346,5 +372,18 @@ fetchUsers()
 }
 :deep(.el-pagination .el-select) {
   width: 100px !important;
+}
+
+.custom-filter-column .el-table__column-filter-trigger i {
+  display: none; /* 隐藏默认图标 */
+}
+
+.custom-filter-column .el-table__column-filter-trigger::after {
+  content: ''; /* 使用 Unicode 图标 */
+  /* 或使用背景图： */
+
+  background: url('../assets/filter.svg') center;
+  font-size: 16px;
+  cursor: pointer;
 }
 </style>
