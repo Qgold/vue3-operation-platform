@@ -1,22 +1,24 @@
 <template>
   <div class="logistics-tracking">
-    <el-row>
-      <el-form :model="searchForm">
-        <el-form-item label="物流单号">
-          <el-input
-            v-model="searchForm.trackingNumber"
-            placeholder="请输入物流单号"
-            clearable
-          />
-        </el-form-item>
-        <el-form-item style="padding-left: 68px;">
-          <el-button
-            type="primary"
-            @click="searchLogistics"
-          >查询物流</el-button>
-        </el-form-item>
-      </el-form>
-    </el-row>
+
+   <el-row>
+    <el-form :model="searchForm">
+      <el-form-item label="物流单号">
+        <el-input
+          v-model="searchForm.trackingNumber"
+          placeholder="请输入物流单号"
+          clearable
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          type="primary"
+          @click="searchLogistics"
+        >查询物流</el-button>
+      </el-form-item>
+    </el-form>
+   </el-row>
+    
 
     <div
       v-if="currentLogistics"
