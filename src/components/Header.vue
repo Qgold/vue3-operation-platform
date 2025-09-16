@@ -11,7 +11,7 @@ import {
   Close
 } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
-
+import Tabs from './Tabs.vue'
 import screenfull from 'screenfull'
 const search = ref(null)
 const dialogVisible = ref(false)
@@ -68,41 +68,13 @@ onMounted(() => {
     >
       <img
         class="logo"
-        src="../assets/Logo.png"
+        src="../assets/logo.png"
         alt="logo"
       >
     </div>
 
-    <el-tabs
-      v-model="activeTab"
-      style='margin-right:auto;margin-left:20px;'
-    >
-      <el-tab-pane
-        label="大屏"
-        name="screen"
-      >
+    <Tabs />
 
-      </el-tab-pane>
-      <el-tab-pane
-        label="烟花"
-        name="firework"
-      >
-
-      </el-tab-pane>
-      <el-tab-pane
-        label="关于"
-        name="about"
-      >
-
-      </el-tab-pane>
-      <el-tab-pane
-        label="Tab1"
-        name="tabs"
-      >
-
-      </el-tab-pane>
-
-    </el-tabs>
     <div class="header-controls">
       <!-- 搜索框 -->
       <el-input
