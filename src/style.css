@@ -666,11 +666,7 @@ button:focus-visible {
 .el-date-editor--daterange {
   --el-date-editor-width: var(--input-small-width) !important;
 }
-.el-input__wrapper {
 
-  box-shadow: none !important;
-
-}
 
 /* -----------------------------------el-radio---------------------------------- */
 .el-radio {

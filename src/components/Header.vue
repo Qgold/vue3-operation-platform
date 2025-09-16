@@ -21,7 +21,7 @@ const { locale } = useI18n()
 const theme = ref(localStorage.getItem('darkMode') == 'true' ? true : false)
 const select = ref('')
 const isFullscreen = ref(false)
-
+const activeTab = ref('screen')
 // 注入 mainRef
 const mainRef = inject('mainRef')
 function setTheme() {
@@ -63,7 +63,7 @@ onMounted(() => {
   <div class="flex flex-row bg-black fixed border-[1px] border-[var(--line-color)] border-solid">
     <div
       class="font-bold text-2xl pl-5 leading-20"
-      style="margin-right:auto;cursor:pointer; display: flex; align-items: center;"
+      style="cursor:pointer; display: flex; align-items: center;flex-row"
       @click="goHome()"
     >
       <img
@@ -71,9 +71,38 @@ onMounted(() => {
         src="../assets/Logo.png"
         alt="logo"
       >
-
     </div>
 
+    <el-tabs
+      v-model="activeTab"
+      style='margin-right:auto;margin-left:20px;'
+    >
+      <el-tab-pane
+        label="大屏"
+        name="screen"
+      >
+
+      </el-tab-pane>
+      <el-tab-pane
+        label="烟花"
+        name="firework"
+      >
+
+      </el-tab-pane>
+      <el-tab-pane
+        label="关于"
+        name="about"
+      >
+
+      </el-tab-pane>
+      <el-tab-pane
+        label="Tab1"
+        name="tabs"
+      >
+
+      </el-tab-pane>
+
+    </el-tabs>
     <div class="header-controls">
       <!-- 搜索框 -->
       <el-input
@@ -312,5 +341,8 @@ onMounted(() => {
     background-color: var(--primary-color);
     color: white;
   }
+}
+:deep(.el-tabs__nav) {
+  border-bottom: 0px solid transparent !important;
 }
 </style>
