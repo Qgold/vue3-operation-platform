@@ -51,7 +51,7 @@ export default {
         title: '关于我们',
         path: '/about'
       },
-      { title: '联系我们', content: '有任何问题？欢迎随时与我们取得联系。' }
+      { title: '联系我们', path: '/tip' }
     ])
 
     const activeTab = ref(0)

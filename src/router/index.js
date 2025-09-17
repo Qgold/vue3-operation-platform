@@ -24,20 +24,7 @@ export const routes = [
   ...systemRoutes,
   ...technologyRoutes,
   ...exampleRoutes,
-  {
-    name:  "other",
-    path: "/other",
-    meta: { title: "进阶" ,icon:'xieyi',isMenu:true},
-    component: Layout,
-    children: [
-    {
-      path: "/resourcce",
-      name: "resourcce",
-      component: ()=>import("../views/Notice.vue"),
-      meta: { title: "资源" , isMenu:true },
-    }],
-   
-  },
+  
   {
     name:'website',
     path:'/website',
@@ -51,8 +38,6 @@ export const routes = [
     component:()=>import('../views/Website2.vue'),
     
   },
-
-
   {
     name:  "report",
     path: "/report",
@@ -62,7 +47,7 @@ export const routes = [
       path: "/tip",
       name: "tip",
       component: ()=>import("../views/Blog.vue"),
-      meta: { title: "提醒" ,isMenu:true  },
+      meta: { title: "提醒"   },
     },
     {
       path: "/notice",
