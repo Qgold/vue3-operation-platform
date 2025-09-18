@@ -2,7 +2,9 @@
 import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 import { Money, User, Document, PieChart } from '@element-plus/icons-vue'
-import Counter from '../components/Counter.vue'
+import Test from '../components/hfolder/Test.vue'
+import Comp from '../components/hfolder/Com.vue'
+import Comp2 from '../components/hfolder/Comp.vue'
 const timeRange = ref('month')
 import { ElMessage } from 'element-plus'
 const lineChartRef = ref(null)

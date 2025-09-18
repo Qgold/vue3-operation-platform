@@ -15,7 +15,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import { Steps as Tsteps, StepItem as TStepItem, InputNumber as TInputNumber } from 'tdesign-vue-next';
 import permissionDirective from './directives/permission'
 import 'tdesign-vue-next/es/style/index.css';
-
+import { lazyDirective } from "./directives/lazy.js";
 import XcmgComponents from 'xcmg-components'
 
 import 'xcmg-components/dist/style.css'
@@ -109,9 +109,11 @@ app.use(ElementPlus,{
 });
 app.use(router);
 app.use(i18n);
+
 app.use(Tsteps);
 app.use(TStepItem);
 app.use(TInputNumber);
 app.use(XcmgComponents)
 app.directive('permission', permissionDirective)
+app.directive('lazy', lazyDirective)
 app.mount("#app");

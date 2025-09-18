@@ -164,7 +164,7 @@ onMounted(() => {
             :src="item.image"
             :alt="item.title"
             class="card-image"
-            loading="lazy"
+            v-lazy="item.image"
           >
           <div class="card-content">
             <h3 class="card-title">{{ item.title }}</h3>
