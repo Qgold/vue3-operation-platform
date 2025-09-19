@@ -2,9 +2,7 @@
 import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 import { Money, User, Document, PieChart } from '@element-plus/icons-vue'
-import Test from '../components/hfolder/Test.vue'
-import Comp from '../components/hfolder/Com.vue'
-import Comp2 from '../components/hfolder/Comp.vue'
+import Progress from '../components/Progress.vue'
 const timeRange = ref('month')
 import { ElMessage } from 'element-plus'
 const lineChartRef = ref(null)
@@ -172,6 +170,7 @@ const initPieChart = () => {
     v-loading="loading"
   >
 
+    <!-- <Progress /> -->
     <!-- 顶部四个卡片 -->
     <el-row
       :gutter="20"
@@ -310,6 +309,46 @@ const initPieChart = () => {
       </div>
     </el-card>
 
+    <!-- 底部两个卡片 -->
+    <el-row :gutter="20">
+      <el-col :span="10">
+        <el-card>
+          <template #header>
+            <div class="card-header">
+              <span>热门商品分析</span>
+            </div>
+          </template>
+          <div
+            ref="pieChartRef"
+            style="height: 300px"
+          ></div>
+        </el-card>
+      </el-col>
+      <el-col :span="14">
+        <el-card>
+          <template #header>
+            <div class="card-header">
+              <span>销售趋势分析</span>
+              <div class="chart-actions">
+                <el-radio-group
+                  v-model="timeRange"
+                  size="small"
+                >
+                  <el-radio-button label="week">周</el-radio-button>
+                  <el-radio-button label="month">月</el-radio-button>
+                  <el-radio-button label="year">年</el-radio-button>
+                </el-radio-group>
+              </div>
+            </div>
+          </template>
+          <div
+            ref="lineChartRef"
+            style="height: 300px"
+          ></div>
+        </el-card>
+      </el-col>
+    </el-row>
+
     <!-- 询价结果公示 -->
     <el-card class="mb-4">
       <template #header>
@@ -365,46 +404,6 @@ const initPieChart = () => {
         </template>
       </el-table>
     </el-card>
-
-    <!-- 底部两个卡片 -->
-    <el-row :gutter="20">
-      <el-col :span="10">
-        <el-card>
-          <template #header>
-            <div class="card-header">
-              <span>热门商品分析</span>
-            </div>
-          </template>
-          <div
-            ref="pieChartRef"
-            style="height: 300px"
-          ></div>
-        </el-card>
-      </el-col>
-      <el-col :span="14">
-        <el-card>
-          <template #header>
-            <div class="card-header">
-              <span>销售趋势分析</span>
-              <div class="chart-actions">
-                <el-radio-group
-                  v-model="timeRange"
-                  size="small"
-                >
-                  <el-radio-button label="week">周</el-radio-button>
-                  <el-radio-button label="month">月</el-radio-button>
-                  <el-radio-button label="year">年</el-radio-button>
-                </el-radio-group>
-              </div>
-            </div>
-          </template>
-          <div
-            ref="lineChartRef"
-            style="height: 300px"
-          ></div>
-        </el-card>
-      </el-col>
-    </el-row>
   </div>
 </template>
 

@@ -192,7 +192,7 @@ onUnmounted(() => {
 
 <style scoped lang="less">
 .multi-line-chart {
-  width: 100%;
+  // width: 100%;
   height: v-bind('typeof height === "number" ? height + "px" : height');
   min-height: 300px;
 }

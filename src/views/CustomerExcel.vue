@@ -38,7 +38,6 @@
           v-model:layout="layout"
           :col-num="12"
           :row-height="30"
-          :width="1200"
           :is-draggable="true"
           :is-resizable="true"
           :vertical-compact="true"
@@ -115,6 +114,7 @@ import {
   Setting,
   Menu,
   TrendCharts,
+  PieChart as PieChartIcon,
   Document
 } from '@element-plus/icons-vue'
 import {
@@ -131,7 +131,7 @@ import * as XLSX from 'xlsx'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import MultiLine from '@/components/MultiLine.vue'
-
+import PieChart from '@/components/PieChart.vue'
 // 注册可用组件
 const componentsMap = {
   'el-table': markRaw(ElTable),
@@ -139,7 +139,8 @@ const componentsMap = {
   'el-input-number': markRaw(ElInputNumber),
   'el-date-picker': markRaw(ElDatePicker),
   'el-select': markRaw(ElSelect),
-  MultiLine: markRaw(MultiLine)
+  MultiLine: markRaw(MultiLine),
+  PieChart: markRaw(PieChart)
 }
 
 // 组件列表定义
@@ -164,12 +165,11 @@ const componentList = [
   },
   {
     type: 'chart',
-    label: '图表',
+    label: '折线图',
     icon: TrendCharts,
     component: 'MultiLine',
     props: {
       chartType: 'line',
-
       data: [
         { date: '2024-01', value: 100 },
         { date: '2024-02', value: 200 },
@@ -190,6 +190,24 @@ const componentList = [
       height: 200,
       smooth: true,
       showArea: true
+    }
+  },
+  {
+    type: 'chart',
+    label: '饼图',
+    icon: PieChartIcon,
+    component: 'PieChart',
+    props: {
+      title: '分布图',
+      height: '200px',
+      smooth: true,
+      showArea: true,
+      data: [
+        { value: 1048, name: '电子产品' },
+        { value: 735, name: '办公用品' },
+        { value: 580, name: '家具用品' },
+        { value: 484, name: '日常用品' }
+      ]
     }
   },
   {
@@ -412,7 +430,6 @@ const saveTemplate = () => {
 .grid-layout {
   background: #f5f7fa;
   min-height: 600px;
-  width: 100% !important;
 }
 
 :deep(.vue-grid-item) {
@@ -434,6 +451,7 @@ const saveTemplate = () => {
   border: 1px solid #dcdfe6;
   border-radius: 4px;
   padding: 8px;
+  overflow: hidden;
 }
 
 .item-header {
