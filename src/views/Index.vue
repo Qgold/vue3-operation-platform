@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 import { Money, User, Document, PieChart } from '@element-plus/icons-vue'
+import { renderLargeData } from '../util/util.js'
 import Progress from '../components/Progress.vue'
 const timeRange = ref('month')
 import { ElMessage } from 'element-plus'
@@ -76,6 +77,7 @@ onMounted(() => {
   setTimeout(() => {
     loading.value = false
   }, 1000)
+
   // const target = document.querySelector('.index-container')
   // const image = window.snapdom.toPng(target)
   // document.body.appendChild(image)
@@ -170,8 +172,40 @@ const initPieChart = () => {
     v-loading="loading"
   >
 
+    <div class="inner-class"></div>
+    <!-- 
+    <div class="grid">
+      <div class="grid-item">内容1</div>
+      <div class="grid-item">内容2</div>
+      <div class="grid-item">内容3</div>
+    </div>
+
+    <nav class="nav">
+      <a
+        key="1"
+        href="#"
+        class="nav-item"
+      >首页</a>
+      <a
+        key="2"
+        href="#"
+        class="nav-item"
+      >采购管理</a>
+      <a
+        key="3"
+        href="#"
+        class="nav-item"
+      >供应商管理</a>
+    </nav> -->
     <!-- <Progress /> -->
+
+    <!-- <div class="flex">
+      <div style="background:red;flex-grow:2;flex-basis:100px;flex-shrink:0;">2222</div>
+      <div style="flex:1;background:yellow;flex-grow:1;flex-basis:260px;flex-shrink:2;">3333</div>
+      <div style="flex:1;background:green;flex-grow:1;flex-basis:100px;flex-shrink:1;">4444</div>
+    </div> -->
     <!-- 顶部四个卡片 -->
+
     <el-row
       :gutter="20"
       class="mb-4"
@@ -510,5 +544,37 @@ const initPieChart = () => {
   object-fit: contain;
 }
 .top-message {
+}
+.nav {
+  // display: inline-block;
+  // vertical-align: middle;
+  font-size: 0;
+  margin-bottom: 10px;
+  display: block;
+  width: 200px;
+}
+.nav-item {
+  display: inline-block;
+  // vertical-align: middle;
+  margin: 0px 10px;
+  font-size: 14px;
+  background: red;
+  padding: 10px;
+}
+.grid {
+  font-size: 0;
+  display: block;
+  background: green;
+}
+.grid-item {
+  display: inline-block;
+  width: 30%;
+  margin: 0 1.5%;
+  font-size: 16px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  background: red;
+
+  line-height: 60px;
 }
 </style>

@@ -57,6 +57,8 @@ export const routes = [
     }],
    
   },  
+  
+    
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',

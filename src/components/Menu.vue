@@ -36,7 +36,7 @@ onMounted(() => {
       class="el-menu-vertical"
       mode="vertical"
       :collapse="isCollapse"
-      :router="true"
+      router
     >
       <template
         v-for="(item, index) in routes.filter(i=>i?.meta?.isMenu)"
@@ -46,7 +46,6 @@ onMounted(() => {
         <el-sub-menu
           v-if="item.children && item.children.length > 0"
           :index="item.path"
-          :key="item.path"
         >
           <template #title>
             <i
@@ -58,7 +57,7 @@ onMounted(() => {
             <span style="margin-left:10px;">{{ item.meta?.title }}</span>
           </template>
           <el-menu-item
-            v-for="(child, childIndex) in item.children.filter(item=>item?.meta?.isMenu)"
+            v-for="(child, childIndex) in item.children.filter(c=>c?.meta?.isMenu)"
             :key="child.path"
             :index="child.path"
           >

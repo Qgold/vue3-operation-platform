@@ -717,7 +717,11 @@ button:focus-visible {
   color:var(--white-text-color) !important;
   margin-left: 10px;
 }
-
+ .btn-next .el-icon svg path {
+  color:var(--line-color) !important;
+  display: block !important;
+  font-size: 12px !important;
+ }
 .el-pagination__editor.el-input {
   width: 44px !important;
 }

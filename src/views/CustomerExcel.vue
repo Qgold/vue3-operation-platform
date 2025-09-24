@@ -38,6 +38,7 @@
           v-model:layout="layout"
           :col-num="12"
           :row-height="30"
+          :width="1000"
           :is-draggable="true"
           :is-resizable="true"
           :vertical-compact="true"
@@ -55,7 +56,7 @@
             :i="item.i"
             @resize="handleResize"
           >
-            <div class="grid-item-content">
+            <div class="grid-item-content clearfix">
               <div class="item-header">
                 <span>{{ item.label }}</span>
                 <el-icon
@@ -140,7 +141,7 @@ const componentsMap = {
   'el-date-picker': markRaw(ElDatePicker),
   'el-select': markRaw(ElSelect),
   MultiLine: markRaw(MultiLine),
-  PieChart: markRaw(PieChart)
+  PieChart: PieChart
 }
 
 // 组件列表定义
@@ -428,8 +429,9 @@ const saveTemplate = () => {
 }
 
 .grid-layout {
-  background: #f5f7fa;
   min-height: 600px;
+
+  width: 100%;
 }
 
 :deep(.vue-grid-item) {
@@ -452,8 +454,19 @@ const saveTemplate = () => {
   border-radius: 4px;
   padding: 8px;
   overflow: hidden;
+  position: relative;
 }
 
+.clearfix::after {
+  content: ''; /* 必须 */
+  display: block; /* 必须，也可以是 table */
+  clear: both; /* 核心：清除左右两侧的浮动 */
+}
+
+/* 为兼容旧浏览器，可添加 */
+.clearfix {
+  *zoom: 1; /* 触发 IE6/7 的 hasLayout */
+}
 .item-header {
   display: flex;
   justify-content: space-between;
@@ -465,7 +478,7 @@ const saveTemplate = () => {
 
 .delete-icon {
   cursor: pointer;
-  color: #f56c6c;
+  color: var(--danger);
 }
 
 .delete-icon:hover {

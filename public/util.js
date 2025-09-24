@@ -16,14 +16,14 @@ function compressImage(inputImage, quality) {
 
 
 //渲染大批量数据
-export function renderLargeData(data,chunkSize,selector){
+function renderLargeData(data,chunkSize,selector){
   const container = document.querySelector(selector);
   let index = 0;
   function renderChunk() {
-    const chunkEnd = Math.min(index + chunkSize,data.length);
-    for(index;index<chunkEnd; index++){
+    const chunkEnd = Math.min(index + chunkSize.data.length);
+    for(;chunkEnd; index++){
       const div =document.createElement('div');
-      div.textContent = data[index]+index;
+      div.textContent = data[index];
       container.appendChild(div);
     }
     if(index<data.length){

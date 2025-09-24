@@ -38,6 +38,7 @@ import { useRouter } from 'vue-router'
 export default {
   setup() {
     const tabs = reactive([
+      { title: '数据看板', path: '/home' },
       { title: '大屏展示', path: '/list' },
       {
         title: '烟花事例',
@@ -48,15 +49,15 @@ export default {
         path: '/componetFlow'
       },
       {
-        title: '关于我们',
-        path: '/about'
-      },
-      { title: '联系我们', path: '/tip' }
+        title: '树形结构',
+        path: '/tree'
+      }
     ])
 
-    const activeTab = ref(0)
     const tabPositions = reactive([])
     const router = useRouter()
+
+    const activeTab = ref(0)
 
     // 计算指示器样式
     const indicatorStyle = computed(() => {

@@ -3,7 +3,10 @@ import { ref, onMounted } from 'vue'
 import { useAppStore } from './store/app'
 import dayjs from 'dayjs'
 import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
-
+// 1. 引入中文语言包
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+// 2. 将语言包设置为响应式数据（或静态数据）
+const locale = zhCn
 const appStore = useAppStore()
 const dialogVisible = ref(false)
 const analysisData = ref(null)
@@ -69,8 +72,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- <el-watermark :content="[$t('author')]"> -->
+
   <router-view />
+
+  <!-- <el-watermark :content="[$t('author')]"> -->
+
   <!-- </el-watermark> -->
   <el-dialog
     v-model="dialogVisible"

@@ -318,6 +318,7 @@ const goFeedback = () => {
   .page-container {
     padding: 24px;
     width: 100%;
+    height: 100%;
   }
 }
 

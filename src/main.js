@@ -102,11 +102,7 @@ if (rolePermissions) {
 if (isCollapse) {
     appStore.$patch({ isCollapse: isCollapse == 'true' ? true : false })
 }
-app.use(ElementPlus,{
-  locale: zhCn,
 
-  
-});
 app.use(router);
 app.use(i18n);
 
@@ -114,6 +110,9 @@ app.use(Tsteps);
 app.use(TStepItem);
 app.use(TInputNumber);
 app.use(XcmgComponents)
+app.use(ElementPlus,{
+  locale: zhCn,
+});
 app.directive('permission', permissionDirective)
 app.directive('lazy', lazyDirective)
 app.mount("#app");
